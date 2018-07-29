@@ -3,13 +3,13 @@
   "modid": "magicalautomata",
   "name": "Magical Automata",
   "description": "Bridging the magical and technical realms",
-  "version": "0.0.1",
-  "mcversion": "1.12.2",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
   "authorList": ["Itorius, Trivaxy"],
   "logoFile": "",
   "screenshots": [],
-  "dependencies": []
+  "dependencies": ["thaumcraft"]
 }
 ]
