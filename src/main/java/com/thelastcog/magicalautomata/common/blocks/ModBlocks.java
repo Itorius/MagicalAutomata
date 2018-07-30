@@ -23,12 +23,10 @@ public class ModBlocks
 {
 	public static final BlockVisReplenisher vis_replenisher = null;
 
-	@Mod.EventBusSubscriber(modid = MagicalAutomata.MODID)
 	public static class RegistrationHandler
 	{
 		public static final Set<ItemBlock> ITEM_BLOCKS = new HashSet<>();
 
-		@SubscribeEvent
 		public static void registerBlocks(final RegistryEvent.Register<Block> event)
 		{
 			final IForgeRegistry<Block> registry = event.getRegistry();
@@ -40,7 +38,6 @@ public class ModBlocks
 			registerTileEntities();
 		}
 
-		@SubscribeEvent
 		public static void registerItemBlocks(final RegistryEvent.Register<Item> event)
 		{
 			final ItemBlock[] items = {

@@ -1,10 +1,12 @@
 package com.thelastcog.magicalautomata;
 
+import com.thelastcog.magicalautomata.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -28,6 +30,9 @@ public class MagicalAutomata
 	@Mod.Instance(MagicalAutomata.MODID)
 	public static MagicalAutomata instance;
 
+	@SidedProxy(clientSide = "com.thelastcog.magicalautomata.proxy.ClientProxy", serverSide = "com.thelastcog.magicalautomata.proxy.ServerProxy")
+    public static CommonProxy proxy;
+
 	private static Logger logger;
 
 	public final CreativeTabs tabMagicalAutomata = new CreativeTabs("tabMagicalAutomata")
@@ -48,11 +53,7 @@ public class MagicalAutomata
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		ResearchCategories.registerCategory("MAGICAL_AUTOMATA", null, new AspectList(),
-				new ResourceLocation("thaumcraft", "textures/research/cat_alchemy.png"),
-				new ResourceLocation("thaumcraft", "textures/gui/gui_research_back_1.jpg"),
-				new ResourceLocation("thaumcraft", "textures/gui/gui_research_back_over.png"));
-		ThaumcraftApi.registerResearchLocation(new ResourceLocation(MODID, "research/all"));
+	    proxy.init(event);
 	}
 
 	@EventHandler
