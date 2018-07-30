@@ -8,4 +8,7 @@ tile.magicalautomata:vis_replenisher.name=Vis Replenisher
 
 
 # Research
-tc.research_category.MagicalAutomata=Magical Automata
+tc.research_category.MAGICAL_AUTOMATA=Magical Automata
+
+magicalautomata.research.introduction.title=Introduction
+magicalautomata.research.introduction.0=Very creative text

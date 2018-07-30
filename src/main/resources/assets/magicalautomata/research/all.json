@@ -1,0 +1,32 @@
+{
+  "entries": [
+    {
+      "key": "INTRODUCTION",
+      "name": "magicalautomata.research.introduction.title",
+      "icons": [
+        "magicalautomata:cog.png"
+      ],
+      "category": "MAGICAL_AUTOMATA",
+      "parents": [
+        "FIRSTSTEPS"
+      ],
+      "siblings": [],
+      "meta": [
+        "HEX",
+        "AUTOUNLOCK"
+      ],
+      "location": [
+        0,
+        0
+      ],
+      "stages": [
+        {
+          "text": "magicalautomata.research.introduction.0",
+          "required_item": [
+            "minecraft:stone"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -6,12 +6,14 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import org.apache.logging.log4j.Logger;
 
 import com.thelastcog.magicalautomata.common.blocks.ModBlocks;
 
+import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.research.ResearchCategories;
 
@@ -46,9 +48,17 @@ public class MagicalAutomata
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-		ResearchCategories.registerCategory("MagicalAutomata", null, new AspectList(),
+		ResearchCategories.registerCategory("MAGICAL_AUTOMATA", null, new AspectList(),
 				new ResourceLocation("thaumcraft", "textures/research/cat_alchemy.png"),
 				new ResourceLocation("thaumcraft", "textures/gui/gui_research_back_1.jpg"),
 				new ResourceLocation("thaumcraft", "textures/gui/gui_research_back_over.png"));
+		ThaumcraftApi.registerResearchLocation(new ResourceLocation(MODID, "research/all"));
+	}
+
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent event)
+	{
+
 	}
 }
+
