@@ -1,9 +1,7 @@
 package com.thelastcog.magicalautomata;
 
-import com.thelastcog.magicalautomata.proxy.CommonProxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -14,10 +12,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import org.apache.logging.log4j.Logger;
 
 import com.thelastcog.magicalautomata.common.blocks.ModBlocks;
-
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.api.research.ResearchCategories;
+import com.thelastcog.magicalautomata.proxy.CommonProxy;
 
 @Mod(modid = MagicalAutomata.MODID, name = MagicalAutomata.NAME, version = MagicalAutomata.VERSION, acceptedMinecraftVersions = MagicalAutomata.MC_VERSION)
 public class MagicalAutomata
@@ -31,7 +26,7 @@ public class MagicalAutomata
 	public static MagicalAutomata instance;
 
 	@SidedProxy(clientSide = "com.thelastcog.magicalautomata.proxy.ClientProxy", serverSide = "com.thelastcog.magicalautomata.proxy.ServerProxy")
-    public static CommonProxy proxy;
+	public static CommonProxy proxy;
 
 	private static Logger logger;
 
@@ -53,7 +48,7 @@ public class MagicalAutomata
 	@EventHandler
 	public void init(FMLInitializationEvent event)
 	{
-	    proxy.init(event);
+		proxy.init(event);
 	}
 
 	@EventHandler
