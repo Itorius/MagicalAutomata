@@ -30,6 +30,7 @@ public class CommonProxy
                 new ResourceLocation("thaumcraft", "textures/gui/gui_research_back_1.jpg"),
                 new ResourceLocation("thaumcraft", "textures/gui/gui_research_back_over.png"));
         ThaumcraftApi.registerResearchLocation(new ResourceLocation(MagicalAutomata.MODID, "research/all"));
+        MagicalAutomata.logger.info("Registered Thaumcraft category");
     }
 
     public void postInit(FMLPostInitializationEvent event)

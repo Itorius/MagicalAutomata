@@ -36,6 +36,8 @@ public class ModBlocks
 			};
 			registry.registerAll(blocks);
 			registerTileEntities();
+
+			MagicalAutomata.logger.info("Registered blocks");
 		}
 
 		public static void registerItemBlocks(final RegistryEvent.Register<Item> event)
@@ -53,11 +55,14 @@ public class ModBlocks
 				registry.register(item.setRegistryName(registryName));
 				ITEM_BLOCKS.add(item);
 			}
+
+			MagicalAutomata.logger.info("Registered item-blocks");
 		}
 
 		private static void registerTileEntities()
 		{
 			registerTileEntity(TileEntityVisReplenisher.class, "vis_replenisher");
+			MagicalAutomata.logger.info("Registered tile entities");
 		}
 
 		private static void registerTileEntity(Class<? extends TileEntity> teClass, String name)

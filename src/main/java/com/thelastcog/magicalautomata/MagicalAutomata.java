@@ -28,7 +28,7 @@ public class MagicalAutomata
 	@SidedProxy(clientSide = "com.thelastcog.magicalautomata.proxy.ClientProxy", serverSide = "com.thelastcog.magicalautomata.proxy.ServerProxy")
 	public static CommonProxy proxy;
 
-	private static Logger logger;
+	public static Logger logger;
 
 	public final CreativeTabs tabMagicalAutomata = new CreativeTabs("tabMagicalAutomata")
 	{
