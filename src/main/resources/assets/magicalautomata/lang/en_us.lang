@@ -1,2 +1,11 @@
 # Creative Tabs
 itemGroup.tabMagicalAutomata=Magical Automata
+
+# Items
+
+# Blocks
+tile.magicalautomata:vis_replenisher.name=Vis Replenisher
+
+
+# Research
+tc.research_category.MagicalAutomata=Magical Automata
