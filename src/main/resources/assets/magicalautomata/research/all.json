@@ -22,8 +22,8 @@
       "stages": [
         {
           "text": "magicalautomata.research.introduction.0",
-          "required_item": [
-            "minecraft:stone"
+          "required_knowledge": [
+            "OBSERVATION;ALCHEMY;1"
           ]
         }
       ]

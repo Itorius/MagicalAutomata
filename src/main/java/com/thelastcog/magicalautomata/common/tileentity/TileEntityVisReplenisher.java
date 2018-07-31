@@ -12,6 +12,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 import com.thelastcog.magicalautomata.common.CustomEnergyStorage;
+import com.thelastcog.magicalautomata.utils.MathUtils;
 
 import thaumcraft.api.aura.AuraHelper;
 
@@ -19,7 +20,7 @@ public class TileEntityVisReplenisher extends TileEntity implements ITickable, I
 {
 	private int timer = 100;
 
-	public CustomEnergyStorage energyStorage = new CustomEnergyStorage(1000000, 5000);
+	public CustomEnergyStorage energyStorage = new CustomEnergyStorage(1000000000, 25000000);
 
 	@Override
 	public void update()
@@ -30,10 +31,13 @@ public class TileEntityVisReplenisher extends TileEntity implements ITickable, I
 			{
 				timer = 100;
 
-				if (energyStorage.getEnergyStored() >= 1000)
+				int requiredEnergy = MathUtils.clamp((int)Math.pow(10, (AuraHelper.getVis(world, pos) / 100) * 2.5), 1000, 100000000);
+
+				if (energyStorage.getEnergyStored() >= requiredEnergy)
 				{
-					AuraHelper.addVis(getWorld(), pos, 1);
-					energyStorage.extractEnergy(1000, false);
+					AuraHelper.addVis(world, pos, 1);
+					energyStorage.extractEnergy(requiredEnergy, false);
+
 					markDirty();
 				}
 			}
