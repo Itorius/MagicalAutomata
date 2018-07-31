@@ -2,10 +2,6 @@ package com.thelastcog.magicalautomata.common.blocks;
 
 import javax.annotation.Nullable;
 
-import com.thelastcog.magicalautomata.compat.TOPCompatibility;
-import mcjty.theoneprobe.api.IProbeHitData;
-import mcjty.theoneprobe.api.IProbeInfo;
-import mcjty.theoneprobe.api.ProbeMode;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -16,6 +12,12 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 
 import com.thelastcog.magicalautomata.common.tileentity.TileEntityVisReplenisher;
+import com.thelastcog.magicalautomata.compat.TOPCompatibility;
+
+import mcjty.theoneprobe.api.IProbeHitData;
+import mcjty.theoneprobe.api.IProbeInfo;
+import mcjty.theoneprobe.api.ProbeMode;
+import thaumcraft.api.aura.AuraHelper;
 
 public class BlockVisReplenisher extends MABlock implements ITileEntityProvider, TOPCompatibility.TOPInfoProvider
 {
@@ -41,6 +43,7 @@ public class BlockVisReplenisher extends MABlock implements ITileEntityProvider,
 			TileEntityVisReplenisher visReplenisherTE = (TileEntityVisReplenisher)te;
 			int seconds = visReplenisherTE.getTimer() / 20;
 
+			probeInfo.horizontal().text(TextFormatting.LIGHT_PURPLE + "Current Vis: " + Float.toString(AuraHelper.getVis(world, data.getPos())));
 			probeInfo.horizontal().text(TextFormatting.LIGHT_PURPLE + Integer.toString(seconds) + " seconds until next Vis replenishment");
 		}
 	}

@@ -3,20 +3,19 @@ package com.thelastcog.magicalautomata.common.blocks;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.thelastcog.magicalautomata.common.tileentity.TileEntityFluxScrubber;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 import com.google.common.base.Preconditions;
 import com.thelastcog.magicalautomata.MagicalAutomata;
+import com.thelastcog.magicalautomata.common.tileentity.TileEntityCreativeEnergySource;
+import com.thelastcog.magicalautomata.common.tileentity.TileEntityFluxScrubber;
 import com.thelastcog.magicalautomata.common.tileentity.TileEntityVisReplenisher;
 
 @GameRegistry.ObjectHolder(MagicalAutomata.MODID)
@@ -24,6 +23,7 @@ public class ModBlocks
 {
 	public static final BlockVisReplenisher vis_replenisher = null;
 	public static final BlockFluxScrubber flux_scrubber = null;
+	public static final BlockCreativeEnergySource creative_energy_source = null;
 
 	public static class RegistrationHandler
 	{
@@ -35,7 +35,8 @@ public class ModBlocks
 
 			final Block[] blocks = {
 					new BlockVisReplenisher(),
-					new BlockFluxScrubber()
+					new BlockFluxScrubber(),
+					new BlockCreativeEnergySource()
 			};
 			registry.registerAll(blocks);
 			registerTileEntities();
@@ -47,7 +48,8 @@ public class ModBlocks
 		{
 			final ItemBlock[] items = {
 					new ItemBlock(vis_replenisher),
-					new ItemBlock(flux_scrubber)
+					new ItemBlock(flux_scrubber),
+					new ItemBlock(creative_energy_source)
 			};
 
 			final IForgeRegistry<Item> registry = event.getRegistry();
@@ -67,6 +69,8 @@ public class ModBlocks
 		{
 			registerTileEntity(TileEntityVisReplenisher.class, "vis_replenisher");
 			registerTileEntity(TileEntityFluxScrubber.class, "flux_scrubber");
+			registerTileEntity(TileEntityCreativeEnergySource.class, "creative_energy_source");
+
 			MagicalAutomata.logger.info("Registered tile entities");
 		}
 

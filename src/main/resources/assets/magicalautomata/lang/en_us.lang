@@ -6,7 +6,7 @@ itemGroup.tabMagicalAutomata=Magical Automata
 # Blocks
 tile.magicalautomata:vis_replenisher.name=Vis Replenisher
 tile.magicalautomata:flux_scrubber.name=Flux Scrubber
-
+tile.magicalautomata:creative_energy_source.name=Creative Energy Source
 
 # Research
 tc.research_category.MAGICAL_AUTOMATA=Magical Automata

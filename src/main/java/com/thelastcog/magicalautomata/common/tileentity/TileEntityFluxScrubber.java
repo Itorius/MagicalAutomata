@@ -19,7 +19,7 @@ import thaumcraft.api.aura.AuraHelper;
 public class TileEntityFluxScrubber extends TileEntity implements ITickable, ICapabilityProvider
 {
 	private int timer = 2000;
-	public CustomEnergyStorage energyStorage = new CustomEnergyStorage((int)1E9, (int)25E6);
+	private CustomEnergyStorage energyStorage = new CustomEnergyStorage(1000000000, 25000000);
 
 	@Override
 	public void update()
@@ -74,5 +74,10 @@ public class TileEntityFluxScrubber extends TileEntity implements ITickable, ICa
 	{
 		energyStorage.readFromNBT(compound);
 		super.readFromNBT(compound);
+	}
+
+	public int getTimer()
+	{
+		return timer;
 	}
 }
