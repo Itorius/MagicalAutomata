@@ -31,7 +31,6 @@ public class TileEntityFluxScrubber extends TileEntity implements ITickable, ICa
                 {
                     AuraHelper.drainFlux(getWorld(), pos, 1, false);
                     energyStorage.extractEnergy(1000, false);
-                    MagicalAutomata.logger.info("Drained 1 flux");
                     markDirty();
                 }
             }
@@ -67,5 +66,10 @@ public class TileEntityFluxScrubber extends TileEntity implements ITickable, ICa
     {
         energyStorage.readFromNBT(compound);
         super.readFromNBT(compound);
+    }
+
+    public int getTimer()
+    {
+        return timer;
     }
 }

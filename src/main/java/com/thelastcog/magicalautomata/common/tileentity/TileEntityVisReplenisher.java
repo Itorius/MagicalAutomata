@@ -67,4 +67,9 @@ public class TileEntityVisReplenisher extends TileEntity implements ITickable, I
 		energyStorage.readFromNBT(compound);
 		super.readFromNBT(compound);
 	}
+
+	public int getTimer()
+	{
+		return timer;
+	}
 }

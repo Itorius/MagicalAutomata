@@ -28,8 +28,21 @@ minecraft {
     replaceIn "MagicalAutomata.java"
 }
 
+repositories {
+    maven { 
+           name 'tterrag maven'
+           url "http://maven.tterrag.com/"
+    }
+    maven {
+        name = "CoFH Maven"
+        url = "http://maven.covers1624.net"
+    } 
+}
+
 dependencies {
     compile fileTree(dir: 'lib', include: '*.jar')
+    deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.14-7"
+    deobfCompile "cofh:RedstoneFlux:1.12-2.0.2.4:universal"
 }
 
 processResources {

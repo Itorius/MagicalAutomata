@@ -2,6 +2,7 @@ package com.thelastcog.magicalautomata.proxy;
 
 import com.thelastcog.magicalautomata.MagicalAutomata;
 import com.thelastcog.magicalautomata.common.blocks.ModBlocks;
+import com.thelastcog.magicalautomata.compat.CompatHandler;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -20,7 +21,7 @@ public class CommonProxy
 {
     public void preInit(FMLPreInitializationEvent event)
     {
-
+        CompatHandler.registerTOP();
     }
 
     public void init(FMLInitializationEvent event)

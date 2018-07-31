@@ -42,6 +42,7 @@ public class MagicalAutomata
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		proxy.preInit(event);
 		logger = event.getModLog();
 	}
 
@@ -54,7 +55,7 @@ public class MagicalAutomata
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event)
 	{
-
+		proxy.postInit(event);
 	}
 }
 
