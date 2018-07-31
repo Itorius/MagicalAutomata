@@ -1,5 +1,6 @@
 package com.thelastcog.magicalautomata.common.tileentity;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -33,12 +34,13 @@ public class TileEntityVisReplenisher extends TileEntity implements ITickable, I
 				{
 					AuraHelper.addVis(getWorld(), pos, 1);
 					energyStorage.extractEnergy(1000, false);
+					markDirty();
 				}
 			}
 		}
 	}
 
-	@Nullable @Override public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
+	@Nullable @Override public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
 	{
 		if (capability == CapabilityEnergy.ENERGY)
 			return (T)energyStorage;
@@ -46,7 +48,7 @@ public class TileEntityVisReplenisher extends TileEntity implements ITickable, I
 		return super.getCapability(capability, facing);
 	}
 
-	@Override public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing)
+	@Override public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing)
 	{
 		if (capability == CapabilityEnergy.ENERGY)
 			return true;

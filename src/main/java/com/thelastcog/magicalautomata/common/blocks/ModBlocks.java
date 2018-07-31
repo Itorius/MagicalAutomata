@@ -3,6 +3,7 @@ package com.thelastcog.magicalautomata.common.blocks;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.thelastcog.magicalautomata.common.tileentity.TileEntityFluxScrubber;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -22,6 +23,7 @@ import com.thelastcog.magicalautomata.common.tileentity.TileEntityVisReplenisher
 public class ModBlocks
 {
 	public static final BlockVisReplenisher vis_replenisher = null;
+	public static final BlockFluxScrubber flux_scrubber = null;
 
 	public static class RegistrationHandler
 	{
@@ -32,7 +34,8 @@ public class ModBlocks
 			final IForgeRegistry<Block> registry = event.getRegistry();
 
 			final Block[] blocks = {
-					new BlockVisReplenisher()
+					new BlockVisReplenisher(),
+					new BlockFluxScrubber()
 			};
 			registry.registerAll(blocks);
 			registerTileEntities();
@@ -43,7 +46,8 @@ public class ModBlocks
 		public static void registerItemBlocks(final RegistryEvent.Register<Item> event)
 		{
 			final ItemBlock[] items = {
-					new ItemBlock(vis_replenisher)
+					new ItemBlock(vis_replenisher),
+					new ItemBlock(flux_scrubber)
 			};
 
 			final IForgeRegistry<Item> registry = event.getRegistry();
@@ -62,6 +66,7 @@ public class ModBlocks
 		private static void registerTileEntities()
 		{
 			registerTileEntity(TileEntityVisReplenisher.class, "vis_replenisher");
+			registerTileEntity(TileEntityFluxScrubber.class, "flux_scrubber");
 			MagicalAutomata.logger.info("Registered tile entities");
 		}
 
