@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import org.apache.logging.log4j.Logger;
 
-import com.thelastcog.magicalautomata.common.blocks.ModBlocks;
+import com.thelastcog.magicalautomata.common.block.ModBlocks;
 import com.thelastcog.magicalautomata.proxy.CommonProxy;
 
 @Mod(modid = MagicalAutomata.MODID, name = MagicalAutomata.NAME, version = MagicalAutomata.VERSION, acceptedMinecraftVersions = MagicalAutomata.MC_VERSION, dependencies = "required-after:thaumcraft")

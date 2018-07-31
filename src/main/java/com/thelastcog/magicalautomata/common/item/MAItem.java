@@ -1,4 +1,4 @@
-package com.thelastcog.magicalautomata.common.items;
+package com.thelastcog.magicalautomata.common.item;
 
 import java.util.Objects;
 

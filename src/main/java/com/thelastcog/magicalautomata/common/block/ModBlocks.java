@@ -1,4 +1,4 @@
-package com.thelastcog.magicalautomata.common.blocks;
+package com.thelastcog.magicalautomata.common.block;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -44,7 +44,7 @@ public class ModBlocks
 			registry.registerAll(blocks);
 			registerTileEntities();
 
-			MagicalAutomata.logger.info("Registered blocks");
+			MagicalAutomata.logger.info("Registered block");
 		}
 
 		public static void registerItemBlocks(final RegistryEvent.Register<Item> event)
@@ -66,7 +66,7 @@ public class ModBlocks
 				ITEM_BLOCKS.add(item);
 			}
 
-			MagicalAutomata.logger.info("Registered item-blocks");
+			MagicalAutomata.logger.info("Registered item-block");
 		}
 
 		private static void registerTileEntities()

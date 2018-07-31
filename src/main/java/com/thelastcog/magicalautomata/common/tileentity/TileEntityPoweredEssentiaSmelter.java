@@ -3,33 +3,32 @@ package com.thelastcog.magicalautomata.common.tileentity;
 import javax.annotation.Nullable;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 
 import com.thelastcog.magicalautomata.common.CustomEnergyStorage;
-import com.thelastcog.magicalautomata.common.blocks.ModBlocks;
 
-import thaumcraft.api.aspects.AspectList;
-import thaumcraft.common.lib.crafting.ThaumcraftCraftingManager;
-
-public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITickable, ICapabilityProvider, IInventory
+public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITickable, ICapabilityProvider
 {
 	public int vis;
 
 	private CustomEnergyStorage energyStorage = new CustomEnergyStorage(100000, 500);
 
-	private ItemStack[] itemArr = new ItemStack[1];
-
-	public TileEntityPoweredEssentiaSmelter()
+	private ItemStackHandler itemStackHandler = new ItemStackHandler(1)
 	{
-		itemArr[0] = ItemStack.EMPTY;
-	}
+		@Override
+		protected void onContentsChanged(int slot)
+		{
+			//TestContainerTileEntity.this.markDirty();
+		}
+	};
 
 	@Override public void update()
 	{
@@ -40,6 +39,9 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 	{
 		if (capability == CapabilityEnergy.ENERGY)
 			return true;
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return true;
+
 		return super.hasCapability(capability, facing);
 	}
 
@@ -47,125 +49,40 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 	{
 		if (capability == CapabilityEnergy.ENERGY)
 			return (T)energyStorage;
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
+			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemStackHandler);
+
 		return super.getCapability(capability, facing);
 	}
 
-	@Override public int getSizeInventory()
+	@Override
+	public void readFromNBT(NBTTagCompound compound)
 	{
-		return itemArr.length;
+		super.readFromNBT(compound);
+
+		if (compound.hasKey("energy"))
+			energyStorage.readFromNBT(compound.getCompoundTag("energy"));
+
+		if (compound.hasKey("item"))
+			itemStackHandler.deserializeNBT(compound.getCompoundTag("item"));
 	}
 
-	@Override public boolean isEmpty()
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound)
 	{
-		for (ItemStack itemstack : itemArr)
-		{
-			if (!itemstack.isEmpty())
-			{
-				return false;
-			}
-		}
+		super.writeToNBT(compound);
 
-		return true;
+		NBTTagCompound compoundEnergy = new NBTTagCompound();
+		energyStorage.writeToNBT(compoundEnergy);
+		compound.setTag("energy", compoundEnergy);
+
+		compound.setTag("item", itemStackHandler.serializeNBT());
+
+		return compound;
 	}
 
-	@Override public ItemStack getStackInSlot(int index)
+	public boolean canInteractWith(EntityPlayer playerIn)
 	{
-		return itemArr[index];
-	}
-
-	@Override public ItemStack decrStackSize(int index, int count)
-	{
-		if (itemArr[index] != null)
-		{
-			ItemStack itemStack;
-			if (itemArr[index].getCount() <= count)
-			{
-				itemStack = itemArr[index];
-				setInventorySlotContents(index, null);
-				markDirty();
-				return itemStack;
-			}
-			else
-			{
-				itemStack = itemArr[index].splitStack(count);
-
-				if (itemArr[index].getCount() == 0)
-					setInventorySlotContents(index, null);
-
-				markDirty();
-				return itemStack;
-			}
-		}
-
-		return null;
-	}
-
-	@Override public ItemStack removeStackFromSlot(int index)
-	{
-		return null;
-	}
-
-	@Override public void setInventorySlotContents(int index, ItemStack stack)
-	{
-		itemArr[index] = stack;
-		if (stack.getCount() > getInventoryStackLimit())
-			stack.setCount(getInventoryStackLimit());
-		markDirty();
-	}
-
-	@Override public int getInventoryStackLimit()
-	{
-		return 64;
-	}
-
-	@Override public boolean isUsableByPlayer(EntityPlayer player)
-	{
-		return world.getTileEntity(pos) == this && getDistanceSq(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() * 0.5F) <= 64D;
-	}
-
-	@Override public void openInventory(EntityPlayer player)
-	{
-
-	}
-
-	@Override public void closeInventory(EntityPlayer player)
-	{
-
-	}
-
-	@Override public boolean isItemValidForSlot(int index, ItemStack stack)
-	{
-		AspectList al;
-		return (al = ThaumcraftCraftingManager.getObjectTags(stack)) != null && al.size() > 0;
-	}
-
-	@Override public int getField(int id)
-	{
-		return 0;
-	}
-
-	@Override public void setField(int id, int value)
-	{
-
-	}
-
-	@Override public int getFieldCount()
-	{
-		return 0;
-	}
-
-	@Override public void clear()
-	{
-
-	}
-
-	@Override public String getName()
-	{
-		return ModBlocks.powered_essentia_smelter.getUnlocalizedName();
-	}
-
-	@Override public boolean hasCustomName()
-	{
-		return false;
+		return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
 	}
 }
