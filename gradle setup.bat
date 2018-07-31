@@ -1,3 +1,6 @@
 gradlew setupDecompWorkspace
+PAUSE
 gradlew idea
+PAUSE
 gradlew genIntellijRuns
+PAUSE

@@ -16,6 +16,7 @@ import com.google.common.base.Preconditions;
 import com.thelastcog.magicalautomata.MagicalAutomata;
 import com.thelastcog.magicalautomata.common.tileentity.TileEntityCreativeEnergySource;
 import com.thelastcog.magicalautomata.common.tileentity.TileEntityFluxScrubber;
+import com.thelastcog.magicalautomata.common.tileentity.TileEntityPoweredEssentiaSmelter;
 import com.thelastcog.magicalautomata.common.tileentity.TileEntityVisReplenisher;
 
 @GameRegistry.ObjectHolder(MagicalAutomata.MODID)
@@ -24,6 +25,7 @@ public class ModBlocks
 	public static final BlockVisReplenisher vis_replenisher = null;
 	public static final BlockFluxScrubber flux_scrubber = null;
 	public static final BlockCreativeEnergySource creative_energy_source = null;
+	public static final BlockPoweredEssentiaSmelter powered_essentia_smelter = null;
 
 	public static class RegistrationHandler
 	{
@@ -36,7 +38,8 @@ public class ModBlocks
 			final Block[] blocks = {
 					new BlockVisReplenisher(),
 					new BlockFluxScrubber(),
-					new BlockCreativeEnergySource()
+					new BlockCreativeEnergySource(),
+					new BlockPoweredEssentiaSmelter()
 			};
 			registry.registerAll(blocks);
 			registerTileEntities();
@@ -49,7 +52,8 @@ public class ModBlocks
 			final ItemBlock[] items = {
 					new ItemBlock(vis_replenisher),
 					new ItemBlock(flux_scrubber),
-					new ItemBlock(creative_energy_source)
+					new ItemBlock(creative_energy_source),
+					new ItemBlock(powered_essentia_smelter)
 			};
 
 			final IForgeRegistry<Item> registry = event.getRegistry();
@@ -70,6 +74,7 @@ public class ModBlocks
 			registerTileEntity(TileEntityVisReplenisher.class, "vis_replenisher");
 			registerTileEntity(TileEntityFluxScrubber.class, "flux_scrubber");
 			registerTileEntity(TileEntityCreativeEnergySource.class, "creative_energy_source");
+			registerTileEntity(TileEntityPoweredEssentiaSmelter.class, "powered_essentia_smelter");
 
 			MagicalAutomata.logger.info("Registered tile entities");
 		}

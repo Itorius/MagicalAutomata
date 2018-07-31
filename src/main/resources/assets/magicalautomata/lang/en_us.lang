@@ -7,6 +7,7 @@ itemGroup.tabMagicalAutomata=Magical Automata
 tile.magicalautomata:vis_replenisher.name=Vis Replenisher
 tile.magicalautomata:flux_scrubber.name=Flux Scrubber
 tile.magicalautomata:creative_energy_source.name=Creative Energy Source
+tile.magicalautomata:powered_essentia_smelter.name=Powered Essentia Smelter
 
 # Research
 tc.research_category.MAGICAL_AUTOMATA=Magical Automata
