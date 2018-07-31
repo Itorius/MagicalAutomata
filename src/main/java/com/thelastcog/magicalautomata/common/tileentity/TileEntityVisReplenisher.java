@@ -17,7 +17,7 @@ import thaumcraft.api.aura.AuraHelper;
 
 public class TileEntityVisReplenisher extends TileEntity implements ITickable, ICapabilityProvider
 {
-	private int timer = 60;
+	private int timer = 100;
 
 	public CustomEnergyStorage energyStorage = new CustomEnergyStorage(1000000, 5000);
 
@@ -28,7 +28,7 @@ public class TileEntityVisReplenisher extends TileEntity implements ITickable, I
 		{
 			if (--timer == 0)
 			{
-				timer = 60;
+				timer = 100;
 
 				if (energyStorage.getEnergyStored() >= 1000)
 				{

@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 
 public class TileEntityFluxScrubber extends TileEntity implements ITickable, ICapabilityProvider
 {
-    private int timer = 60;
+    private int timer = 2000;
     public CustomEnergyStorage energyStorage = new CustomEnergyStorage(1000000, 5000);
 
     @Override
@@ -25,9 +25,9 @@ public class TileEntityFluxScrubber extends TileEntity implements ITickable, ICa
         {
             if (--timer == 0)
             {
-                timer = 60;
+                timer = 2000;
 
-                if (energyStorage.getEnergyStored() == 1000)
+                if (energyStorage.getEnergyStored() >= 1000)
                 {
                     AuraHelper.drainFlux(getWorld(), pos, 1, false);
                     energyStorage.extractEnergy(1000, false);
