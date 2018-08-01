@@ -26,6 +26,7 @@ public class ContainerPoweredEssentiaSmeltery extends Container {
     public void addSlots(IInventory playerInventory) {
         IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         this.addSlotToContainer(new SlotValidated(itemHandler, 0, 80, 8));
+        this.addSlotToContainer(new SlotValidated(itemHandler, 1, 80, 48));
 
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
@@ -39,6 +40,8 @@ public class ContainerPoweredEssentiaSmeltery extends Container {
 
     @Nullable
     public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+        IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 
@@ -46,11 +49,11 @@ public class ContainerPoweredEssentiaSmeltery extends Container {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (index < 1) {
-                if (!this.mergeItemStack(itemstack1, 1, inventorySlots.size(), true)) {
+            if (index < handler.getSlots()) {
+                if (!this.mergeItemStack(itemstack1, handler.getSlots(), inventorySlots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+            } else if (!this.mergeItemStack(itemstack1, 0, handler.getSlots(), false)) {
                 return ItemStack.EMPTY;
             }
 

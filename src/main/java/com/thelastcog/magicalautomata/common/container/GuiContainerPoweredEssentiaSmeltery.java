@@ -10,9 +10,6 @@ import thaumcraft.client.gui.GuiSmelter;
 import thaumcraft.common.tiles.essentia.TileSmelter;
 
 public class GuiContainerPoweredEssentiaSmeltery extends GuiContainer {
-    public static final int WIDTH = 180;
-    public static final int HEIGHT = 152;
-
     ResourceLocation background = new ResourceLocation("thaumcraft", "textures/gui/gui_smelter.png");
 
     private TileEntityPoweredEssentiaSmelter te;

@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -33,7 +34,7 @@ import thaumcraft.common.tiles.essentia.TileAlembic;
 
 public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITickable, ICapabilityProvider {
     private CustomEnergyStorage energyStorage = new CustomEnergyStorage(100000, 500);
-    private ItemStackHandler itemStackHandler = new ItemStackHandler(1) {
+    private ItemStackHandler itemStackHandler = new ItemStackHandler(2) {
         @Override
         protected void onContentsChanged(int slot) {
             TileEntityPoweredEssentiaSmelter.this.markDirty();
@@ -41,8 +42,15 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            AspectList al;
-            return (al = ThaumcraftCraftingManager.getObjectTags(stack)) != null && al.size() > 0;
+            switch (slot) {
+                case 0:
+                    AspectList al;
+                    return (al = ThaumcraftCraftingManager.getObjectTags(stack)) != null && al.size() > 0;
+                case 1:
+                    return stack.hasCapability(CapabilityEnergy.ENERGY, null);
+                default:
+                    return false;
+            }
         }
 
         @Override
