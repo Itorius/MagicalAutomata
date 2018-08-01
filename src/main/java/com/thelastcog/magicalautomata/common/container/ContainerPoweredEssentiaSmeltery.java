@@ -57,7 +57,7 @@ public class ContainerPoweredEssentiaSmeltery extends Container
 		int slotIndex = 0;
 		for (int i = 0; i < itemHandler.getSlots(); i++)
 		{
-			addSlotToContainer(new SlotItemHandler(itemHandler, slotIndex, x, y));
+			addSlotToContainer(new SlotValidated(itemHandler, slotIndex, x, y));
 			slotIndex++;
 			x += 18;
 		}
