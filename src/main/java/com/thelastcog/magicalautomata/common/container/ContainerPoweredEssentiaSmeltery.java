@@ -15,99 +15,63 @@ import net.minecraftforge.items.SlotItemHandler;
 
 import com.thelastcog.magicalautomata.common.tileentity.TileEntityPoweredEssentiaSmelter;
 
-public class ContainerPoweredEssentiaSmeltery extends Container
-{
-	private TileEntityPoweredEssentiaSmelter te;
+public class ContainerPoweredEssentiaSmeltery extends Container {
+    private TileEntityPoweredEssentiaSmelter te;
 
-	public ContainerPoweredEssentiaSmeltery(IInventory playerInventory, TileEntityPoweredEssentiaSmelter te)
-	{
-		this.te = te;
+    public ContainerPoweredEssentiaSmeltery(IInventory playerInventory, TileEntityPoweredEssentiaSmelter te) {
+        this.te = te;
+        addSlots(playerInventory);
+    }
 
-		addOwnSlots();
-		addPlayerSlots(playerInventory);
-	}
+    public void addSlots(IInventory playerInventory) {
+        IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        this.addSlotToContainer(new SlotValidated(itemHandler, 0, 80, 8));
 
-	private void addPlayerSlots(IInventory playerInventory)
-	{
-		for (int row = 0; row < 3; ++row)
-		{
-			for (int col = 0; col < 9; ++col)
-			{
-				int x = 10 + col * 18;
-				int y = row * 18 + 70;
-				this.addSlotToContainer(new Slot(playerInventory, col + row * 9 + 10, x, y));
-			}
-		}
+        for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 9; ++j) {
+                this.addSlotToContainer(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+            }
+        }
+        for (int i = 0; i < 9; ++i) {
+            this.addSlotToContainer(new Slot(playerInventory, i, 8 + i * 18, 142));
+        }
+    }
 
-		for (int row = 0; row < 9; ++row)
-		{
-			int x = 10 + row * 18;
-			int y = 58 + 70;
-			this.addSlotToContainer(new Slot(playerInventory, row, x, y));
-		}
-	}
+    @Nullable
+    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(index);
 
-	private void addOwnSlots()
-	{
-		IItemHandler itemHandler = this.te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-		int x = 10;
-		int y = 6;
+        if (slot != null && slot.getHasStack()) {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
 
-		// Add our own slots
-		int slotIndex = 0;
-		for (int i = 0; i < itemHandler.getSlots(); i++)
-		{
-			addSlotToContainer(new SlotValidated(itemHandler, slotIndex, x, y));
-			slotIndex++;
-			x += 18;
-		}
-	}
+            if (index < 1) {
+                if (!this.mergeItemStack(itemstack1, 1, inventorySlots.size(), true)) {
+                    return ItemStack.EMPTY;
+                }
+            } else if (!this.mergeItemStack(itemstack1, 0, 1, false)) {
+                return ItemStack.EMPTY;
+            }
 
-	@Nullable
-	public ItemStack transferStackInSlot(EntityPlayer playerIn, int index)
-	{
-		ItemStack itemstack = ItemStack.EMPTY;
-		Slot slot = this.inventorySlots.get(index);
+            if (itemstack1.isEmpty()) {
+                slot.putStack(ItemStack.EMPTY);
+            } else {
+                slot.onSlotChanged();
+            }
 
-		if (slot != null && slot.getHasStack())
-		{
-			ItemStack itemstack1 = slot.getStack();
-			itemstack = itemstack1.copy();
+            if (itemstack1.getCount() == itemstack.getCount()) {
+                return ItemStack.EMPTY;
+            }
 
-			if (index < 1)
-			{
-				if (!this.mergeItemStack(itemstack1, 1, inventorySlots.size(), true))
-				{
-					return ItemStack.EMPTY;
-				}
-			}
-			else if (!this.mergeItemStack(itemstack1, 0, 1, false))
-			{
-				return ItemStack.EMPTY;
-			}
+            slot.onTake(playerIn, itemstack1);
+        }
 
-			if (itemstack1.isEmpty())
-			{
-				slot.putStack(ItemStack.EMPTY);
-			}
-			else
-			{
-				slot.onSlotChanged();
-			}
+        return itemstack;
+    }
 
-			if (itemstack1.getCount() == itemstack.getCount())
-			{
-				return ItemStack.EMPTY;
-			}
-
-			slot.onTake(playerIn, itemstack1);
-		}
-
-		return itemstack;
-	}
-
-	@Override public boolean canInteractWith(EntityPlayer playerIn)
-	{
-		return te.canInteractWith(playerIn);
-	}
+    @Override
+    public boolean canInteractWith(EntityPlayer playerIn) {
+        return te.canInteractWith(playerIn);
+    }
 }
