@@ -1,5 +1,6 @@
 package com.thelastcog.magicalautomata.proxy;
 
+import com.thelastcog.magicalautomata.MAInfo;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
@@ -35,7 +36,7 @@ public class CommonProxy
 				new ResourceLocation("thaumcraft", "textures/research/cat_alchemy.png"),
 				new ResourceLocation("thaumcraft", "textures/gui/gui_research_back_1.jpg"),
 				new ResourceLocation("thaumcraft", "textures/gui/gui_research_back_over.png"));
-		ThaumcraftApi.registerResearchLocation(new ResourceLocation(MagicalAutomata.MODID, "research/all"));
+		ThaumcraftApi.registerResearchLocation(new ResourceLocation(MAInfo.MODID, "research/all"));
 		MagicalAutomata.logger.info("Registered Thaumcraft category");
 	}
 

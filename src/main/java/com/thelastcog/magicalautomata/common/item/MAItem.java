@@ -2,6 +2,7 @@ package com.thelastcog.magicalautomata.common.item;
 
 import java.util.Objects;
 
+import com.thelastcog.magicalautomata.MAInfo;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 
@@ -18,7 +19,7 @@ public abstract class MAItem extends Item
 
 	public static void setItemName(@NotNull MAItem item, String itemName)
 	{
-		item.setRegistryName(MagicalAutomata.MODID, itemName);
+		item.setRegistryName(MAInfo.MODID, itemName);
 		final ResourceLocation regName = Objects.requireNonNull(item.getRegistryName());
 		item.setUnlocalizedName(regName.toString());
 	}

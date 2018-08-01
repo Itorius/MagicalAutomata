@@ -3,6 +3,7 @@ package com.thelastcog.magicalautomata.common.block;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.thelastcog.magicalautomata.MAInfo;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -19,7 +20,7 @@ import com.thelastcog.magicalautomata.common.tileentity.TileEntityFluxScrubber;
 import com.thelastcog.magicalautomata.common.tileentity.TileEntityPoweredEssentiaSmelter;
 import com.thelastcog.magicalautomata.common.tileentity.TileEntityVisReplenisher;
 
-@GameRegistry.ObjectHolder(MagicalAutomata.MODID)
+@GameRegistry.ObjectHolder(MAInfo.MODID)
 public class ModBlocks
 {
 	public static final BlockVisReplenisher vis_replenisher = null;

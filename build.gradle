@@ -25,7 +25,7 @@ minecraft {
 
     replace "@VERSION@", project.version
     replace "@MC_VERSION@", project.minecraft.version
-    replaceIn "MagicalAutomata.java"
+    replaceIn "MAInfo.java"
 }
 
 repositories {

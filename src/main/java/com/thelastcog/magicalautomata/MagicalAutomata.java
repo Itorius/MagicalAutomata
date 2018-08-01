@@ -14,15 +14,10 @@ import org.apache.logging.log4j.Logger;
 import com.thelastcog.magicalautomata.common.block.ModBlocks;
 import com.thelastcog.magicalautomata.proxy.CommonProxy;
 
-@Mod(modid = MagicalAutomata.MODID, name = MagicalAutomata.NAME, version = MagicalAutomata.VERSION, acceptedMinecraftVersions = MagicalAutomata.MC_VERSION, dependencies = "required-after:thaumcraft")
+@Mod(modid = MAInfo.MODID, name = MAInfo.NAME, version = MAInfo.VERSION, acceptedMinecraftVersions = MAInfo.MC_VERSION, dependencies = MAInfo.DEPENDENCIES)
 public class MagicalAutomata
 {
-	public static final String MODID = "magicalautomata";
-	public static final String NAME = "Magical Automata";
-	public static final String VERSION = "0.0.1";
-	public static final String MC_VERSION = "[1.12]";
-
-	@Mod.Instance(MagicalAutomata.MODID)
+	@Mod.Instance(MAInfo.MODID)
 	public static MagicalAutomata instance;
 
 	@SidedProxy(clientSide = "com.thelastcog.magicalautomata.proxy.ClientProxy", serverSide = "com.thelastcog.magicalautomata.proxy.ServerProxy")

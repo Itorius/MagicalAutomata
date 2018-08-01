@@ -2,6 +2,7 @@ package com.thelastcog.magicalautomata.common.block;
 
 import java.util.Objects;
 
+import com.thelastcog.magicalautomata.MAInfo;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -20,7 +21,7 @@ public abstract class MABlock extends Block
 
 	private static void setBlockName(final MABlock block, final String blockName)
 	{
-		block.setRegistryName(MagicalAutomata.MODID, blockName);
+		block.setRegistryName(MAInfo.MODID, blockName);
 		final ResourceLocation registryName = Objects.requireNonNull(block.getRegistryName());
 		block.setUnlocalizedName(registryName.toString());
 	}
