@@ -10,9 +10,12 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import com.thelastcog.magicalautomata.MagicalAutomata;
 import com.thelastcog.magicalautomata.common.tileentity.TileEntityPoweredEssentiaSmelter;
+import com.thelastcog.magicalautomata.utils.InventoryUtils;
 
 import thaumcraft.api.aura.AuraHelper;
 
@@ -34,17 +37,19 @@ public class BlockPoweredEssentiaSmelter extends MABlock implements ITileEntityP
 	public void breakBlock(World worldIn, BlockPos pos, IBlockState state)
 	{
 		TileEntityPoweredEssentiaSmelter tileentity = (TileEntityPoweredEssentiaSmelter)worldIn.getTileEntity(pos);
-		if (tileentity != null && !worldIn.isRemote && tileentity.vis > 0)
+		if (tileentity != null && !worldIn.isRemote)
 		{
-			//tileentity.inv.drop(worldIn, pos);
-			AuraHelper.polluteAura(worldIn, pos, tileentity.vis, true);
+			IItemHandler handler = tileentity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+			InventoryUtils.drop(handler, worldIn, pos);
+
+			if (tileentity.vis > 0)
+				AuraHelper.polluteAura(worldIn, pos, tileentity.vis, true);
 		}
 		super.breakBlock(worldIn, pos, state);
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY,
-			float hitZ)
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ)
 	{
 		if (world.isRemote)
 			return true;
