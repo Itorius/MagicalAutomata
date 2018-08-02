@@ -3,6 +3,7 @@ package com.thelastcog.magicalautomata.common.tileentity;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -75,4 +76,8 @@ public class TileEntityVisReplenisher extends TileEntity implements ITickable, I
 	{
 		return timer;
 	}
+
+    public boolean canInteractWith(EntityPlayer playerIn) {
+        return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
+    }
 }

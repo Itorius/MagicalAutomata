@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
 import com.thelastcog.magicalautomata.common.container.ContainerPoweredEssentiaSmeltery;
-import com.thelastcog.magicalautomata.common.container.GuiContainerPoweredEssentiaSmeltery;
+import com.thelastcog.magicalautomata.common.container.gui.GuiContainerPoweredEssentiaSmeltery;
 import com.thelastcog.magicalautomata.common.tileentity.TileEntityPoweredEssentiaSmelter;
 
 public class GuiProxy implements IGuiHandler
