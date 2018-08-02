@@ -121,6 +121,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 	public int furnaceCookTime;
 	int timer = 0;
 	public int capacity = 250;
+	public int energyUsage = 100;
 	//int bellows = -1;
 
 	public float getEfficiency()
@@ -215,6 +216,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 			if (/*BlockStateUtils.isEnabled(getBlockMetadata()) &&*/ canSmelt())
 			{
 				++furnaceCookTime;
+				energyStorage.extractEnergy(energyUsage, false);
 				shouldMarkDirty = true;
 				//world.notifyBlockUpdate(pos, blockType.getDefaultState(), blockType.getDefaultState(), 0);
 				if (furnaceCookTime >= smeltTime)
@@ -236,6 +238,9 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 
 	private boolean canSmelt()
 	{
+		if (energyStorage.getEnergyStored() < energyUsage)
+			return false;
+
 		if (itemStackHandler.getStackInSlot(0).isEmpty())
 			return false;
 
@@ -259,6 +264,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 		{
 			aspects.remove(tag, amount);
 			this.vis = aspects.visSize();
+			markDirty();
 			//sendChangesToNearby();
 			return true;
 		}
