@@ -22,7 +22,7 @@ public class ContainerFluxScrubber extends Container {
 
     public void addSlots(IInventory playerInventory) {
         IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        this.addSlotToContainer(new SlotValidated(itemHandler, 1, 80, 48));
+	    this.addSlotToContainer(new SlotValidated(itemHandler, 0, 80, 48));
 
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 9; ++j) {
