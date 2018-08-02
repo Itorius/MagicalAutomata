@@ -27,7 +27,7 @@ public class ModItems
 		public static void registerItems(final RegistryEvent.Register<Item> event)
 		{
 			final Item[] items = {
-					//		new ItemVisReplenisher()
+					new ItemPoweredScribingTool(10000, 50)
 			};
 
 			final IForgeRegistry<Item> registry = event.getRegistry();
