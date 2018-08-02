@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -115,20 +116,16 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 
 	public AspectList aspects = new AspectList();
 	public int vis;
-	public int smeltTime = 100;
-	//public int furnaceBurnTime;
-	public int currentItemBurnTime;
-	public int furnaceCookTime;
-	int timer = 0;
-	public int capacity = 250;
-	public int energyUsage = 100;
-	//int bellows = -1;
+	private int smeltTime = 100;
+	private int furnaceCookTime;
+	private int timer = 0;
+	private int capacity = 250;
+	private int energyUsage = 100;
 
 	public float getEfficiency()
 	{
 		return 1.0f;
 	}
-
 	public int getSpeed()
 	{
 		return 10;
@@ -137,21 +134,20 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 	@Override
 	public void update()
 	{
-		//boolean flag = furnaceBurnTime > 0;
 		boolean shouldMarkDirty = false;
 		++timer;
-		/*if (furnaceBurnTime > 0)
-		{
-			--furnaceBurnTime;
-		}*/
 
 		if (world != null && !world.isRemote)
 		{
-            /*if (bellows < 0) {
-                checkNeighbours();
-            }*/
-			int speed = getSpeed();
+			ItemStack itemStack = itemStackHandler.getStackInSlot(1);
+			if (!itemStack.isEmpty() && itemStack.hasCapability(CapabilityEnergy.ENERGY, null))
+			{
+				IEnergyStorage itemEnergy = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
+				int energy = itemEnergy.extractEnergy(Math.min(energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored(), energyStorage.getMaxReceive()), false);
+				energyStorage.receiveEnergy(energy, false);
+			}
 
+			int speed = getSpeed();
 			if (timer % (speed / 2) == 0 && aspects.size() > 0)
 			{
 				for (Aspect aspect : aspects.getAspects())
@@ -162,63 +158,14 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 						break;
 					}
 				}
-
-				//<editor-fold desc="Auxilary attachments">
-				/*block1:
-				for (EnumFacing face : EnumFacing.HORIZONTALS)
-				{
-					IBlockState aux = world.getBlockState(getPos().offset(face));
-					if (aux.getBlock() != BlocksTC.smelterAux || BlockStateUtils.getFacing(aux) != face.getOpposite())
-						continue;
-					for (Aspect aspect : aspects.getAspects())
-					{
-						if (aspects.getAmount(aspect) <= 0 || !insertToAlembic(getWorld(), getPos().offset(face), aspect))
-							continue;
-						takeFromContainer(aspect, 1);
-						continue block1;
-					}
-				}*/
-				//</editor-fold>
 			}
 
-			//<editor-fold desc="Fuel consuption">
-			/*if (furnaceBurnTime == 0)
-			{
-				if (canSmelt())
-				{
-					currentItemBurnTime = furnaceBurnTime = TileEntityFurnace.getItemBurnTime(itemStackHandler.getStackInSlot(1));
-					if (furnaceBurnTime > 0)
-					{
-						BlockSmelter.setFurnaceState(world, getPos(), true);
-						shouldMarkDirty = true;
-
-						if (itemStackHandler.getStackInSlot(1) != null)
-						{
-							itemStackHandler.getStackInSlot(1).shrink(1);
-							if (itemStackHandler.getStackInSlot(1).getCount() == 0)
-							{
-								itemStackHandler.setStackInSlot(1, itemStackHandler.getStackInSlot(1).getItem().getContainerItem(itemStackHandler.getStackInSlot(1)));
-							}
-						}
-					}
-					else
-					{
-						BlockSmelter.setFurnaceState(world, getPos(), false);
-					}
-				}
-				else
-				{
-					BlockSmelter.setFurnaceState(world, getPos(), false);
-				}
-			}*/
-			//</editor-fold>
-
-			if (/*BlockStateUtils.isEnabled(getBlockMetadata()) &&*/ canSmelt())
+			if (canSmelt())
 			{
 				++furnaceCookTime;
 				energyStorage.extractEnergy(energyUsage, false);
 				shouldMarkDirty = true;
-				//world.notifyBlockUpdate(pos, blockType.getDefaultState(), blockType.getDefaultState(), 0);
+
 				if (furnaceCookTime >= smeltTime)
 				{
 					furnaceCookTime = 0;
@@ -227,9 +174,6 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 				}
 			} else
 				furnaceCookTime = 0;
-
-			/*if (flag != furnaceBurnTime > 0)
-				shouldMarkDirty = true;*/
 		}
 
 		if (shouldMarkDirty)
@@ -254,7 +198,6 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 		smeltTime = vs * 2;
 		markDirty();
 
-		//world.notifyBlockUpdate(pos, blockType.getDefaultState(), blockType.getDefaultState(), 0);
 		return true;
 	}
 
@@ -265,7 +208,6 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 			aspects.remove(tag, amount);
 			this.vis = aspects.visSize();
 			markDirty();
-			//sendChangesToNearby();
 			return true;
 		}
 		return false;
