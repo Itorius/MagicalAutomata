@@ -17,6 +17,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
@@ -35,7 +37,8 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 {
 	private CustomEnergyStorage energyStorage = new CustomEnergyStorage(100000, 500)
 	{
-		@Override public int receiveEnergy(int maxReceive, boolean simulate)
+		@Override
+		public int receiveEnergy(int maxReceive, boolean simulate)
 		{
 			markDirty();
 			return super.receiveEnergy(maxReceive, simulate);
@@ -55,13 +58,13 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 		{
 			switch (slot)
 			{
-			case 0:
-				AspectList al;
-				return (al = ThaumcraftCraftingManager.getObjectTags(stack)) != null && al.size() > 0;
-			case 1:
-				return stack.hasCapability(CapabilityEnergy.ENERGY, null);
-			default:
-				return false;
+				case 0:
+					AspectList al;
+					return (al = ThaumcraftCraftingManager.getObjectTags(stack)) != null && al.size() > 0;
+				case 1:
+					return stack.hasCapability(CapabilityEnergy.ENERGY, null);
+				default:
+					return false;
 			}
 		}
 
@@ -99,8 +102,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 				if (existing.isEmpty())
 				{
 					stacks.set(slot, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack);
-				}
-				else
+				} else
 				{
 					existing.grow(reachedLimit ? limit : stack.getCount());
 				}
@@ -221,8 +223,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 					smeltItem();
 					shouldMarkDirty = true;
 				}
-			}
-			else
+			} else
 				furnaceCookTime = 0;
 
 			/*if (flag != furnaceBurnTime > 0)
@@ -264,7 +265,8 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 		return false;
 	}
 
-	@Override public void markDirty()
+	@Override
+	public void markDirty()
 	{
 		super.markDirty();
 		world.notifyBlockUpdate(pos, blockType.getBlockState().getBaseState(), blockType.getBlockState().getBaseState(), 0);
@@ -288,8 +290,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 						al.reduce(a, 1);
 						++flux;
 					}
-				}
-				else if (getEfficiency() > 1.0F) // Gain extra vis?
+				} else if (getEfficiency() > 1.0F) // Gain extra vis?
 				{
 					int qq = al.getAmount(a);
 					for (int q = 0; q < qq; ++q)
@@ -321,8 +322,6 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 			}
 			this.vis = aspects.visSize();
 
-			//world.notifyBlockUpdate(pos, blockType.getDefaultState(), blockType.getDefaultState(), 0);
-
 			itemStackHandler.getStackInSlot(0).shrink(1);
 			if (itemStackHandler.getStackInSlot(0).getCount() <= 0)
 				itemStackHandler.setStackInSlot(0, ItemStack.EMPTY);
@@ -336,7 +335,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 		int deep = 1;
 		while ((te = world.getTileEntity(pos.up(deep))) != null && te instanceof TileAlembic)
 		{
-			alembic = (TileAlembic)te;
+			alembic = (TileAlembic) te;
 			if (alembic.amount > 0 && alembic.aspect == aspect && alembic.addToContainer(aspect, 1) == 0)
 			{
 				return true;
@@ -346,7 +345,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 		deep = 1;
 		while ((te = world.getTileEntity(pos.up(deep))) != null && te instanceof TileAlembic)
 		{
-			alembic = (TileAlembic)te;
+			alembic = (TileAlembic) te;
 			if ((alembic.aspectFilter == null || alembic.aspectFilter == aspect) && alembic.addToContainer(aspect, 1) == 0)
 			{
 				return true;
@@ -356,25 +355,26 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 		return false;
 	}
 
-	//@SideOnly(value = Side.CLIENT)
+	@SideOnly(value = Side.CLIENT)
 	public float getVisScaled(int height)
 	{
 		if (this.capacity == 0)
 			return 0;
-		return (this.vis / (float)this.capacity) * height;
+		return (this.vis / (float) this.capacity) * height;
 	}
 
-	//@SideOnly(value = Side.CLIENT)
+	@SideOnly(value = Side.CLIENT)
 	public float getCookProgressScaled(int height)
 	{
 		if (this.smeltTime <= 0)
 			this.smeltTime = 1;
-		return (this.furnaceCookTime / (float)this.smeltTime) * height;
+		return (this.furnaceCookTime / (float) this.smeltTime) * height;
 	}
 
+	@SideOnly(value = Side.CLIENT)
 	public float getEnergyScaled(int height)
 	{
-		return (energyStorage.getEnergyStored() / (float)energyStorage.getMaxEnergyStored()) * height;
+		return (energyStorage.getEnergyStored() / (float) energyStorage.getMaxEnergyStored()) * height;
 	}
 
 	@Override
@@ -393,7 +393,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
 	{
 		if (capability == CapabilityEnergy.ENERGY)
-			return (T)energyStorage;
+			return (T) energyStorage;
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemStackHandler);
 
@@ -431,18 +431,22 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 		return compound;
 	}
 
-	@Nullable @Override public SPacketUpdateTileEntity getUpdatePacket()
+	@Nullable
+	@Override
+	public SPacketUpdateTileEntity getUpdatePacket()
 	{
 		return new SPacketUpdateTileEntity(this.getPos(), 1, this.getUpdateTag());
 	}
 
-	@Override public NBTTagCompound getUpdateTag()
+	@Override
+	public NBTTagCompound getUpdateTag()
 	{
 		NBTTagCompound compound = new NBTTagCompound();
 		return writeToNBT(compound);
 	}
 
-	@Override public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
+	@Override
+	public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
 	{
 		NBTTagCompound compound = pkt.getNbtCompound();
 		readFromNBT(compound);
