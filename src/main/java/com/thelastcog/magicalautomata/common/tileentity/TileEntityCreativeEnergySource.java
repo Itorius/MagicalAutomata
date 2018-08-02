@@ -17,9 +17,17 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
 
 import com.thelastcog.magicalautomata.MagicalAutomata;
+import com.thelastcog.magicalautomata.common.CustomEnergyStorage;
 
-public class TileEntityCreativeEnergySource extends TileEntity implements ITickable
+public class TileEntityCreativeEnergySource extends TileEntity implements ITickable, ICapabilityProvider
 {
+	private CustomEnergyStorage energyStorage = new CustomEnergyStorage(Integer.MAX_VALUE, Integer.MAX_VALUE)
+	{
+		@Override public int extractEnergy(int maxExtract, boolean simulate)
+		{
+			return Integer.MAX_VALUE;
+		}
+	};
 	private long lastProvided;
 
 	@Override public void update()

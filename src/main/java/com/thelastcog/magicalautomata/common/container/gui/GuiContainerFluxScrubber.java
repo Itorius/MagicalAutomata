@@ -17,7 +17,8 @@ import thaumcraft.api.aura.AuraHelper;
 
 public class GuiContainerFluxScrubber extends GuiContainer
 {
-	ResourceLocation background = new ResourceLocation(MAInfo.MODID, "textures/gui/aura_manipulator_gui.png");
+	private ResourceLocation background = new ResourceLocation(MAInfo.MODID, "textures/gui/aura_manipulator_gui.png");
+	private ResourceLocation thaumcraftHUD = new ResourceLocation("thaumcraft", "textures/gui/hud.png");
 
 	private TileEntityFluxScrubber te;
 
@@ -44,107 +45,105 @@ public class GuiContainerFluxScrubber extends GuiContainer
 			IEnergyStorage energy = te.getCapability(CapabilityEnergy.ENERGY, null);
 			drawHoveringText("Energy: " + energy.getEnergyStored() + "/" + energy.getMaxEnergyStored(), mouseX - guiLeft, mouseY - guiTop);
 		}
+
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
+	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)
 	{
-		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		GL11.glColor4f(1f, 1f, 1f, 1f);
 		mc.renderEngine.bindTexture(this.background);
-		//int k = (width - xSize) / 2;
-		//int l = (height - ySize) / 2;
 
 		GL11.glEnable(GL11.GL_BLEND);
-		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		RenderUtils.drawTexturedQuad(guiLeft, guiTop, xSize, ySize, 0f, 0f, zLevel);
 
 		float height = te.getEnergyScaled(46);
-		RenderUtils.drawTexturedQuad(guiLeft + 106, guiTop + 59 - height, 216, 46 - height, 9, height, zLevel);
+		RenderUtils.drawTexturedQuad(guiLeft + 106, guiTop + 59f - height, 9f, height, 216f, 46f - height, zLevel);
 
-		renderAuraDisplay(0);
+		renderAuraDisplay(partialTicks);
 	}
 
 	private void renderAuraDisplay(float partialTicks)
 	{
-		mc.renderEngine.bindTexture(new ResourceLocation("thaumcraft", "textures/gui/hud.png"));
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		GL11.glColor4f(1f, 1f, 1f, 1f);
 
-		float base = MathHelper.clamp((float)AuraHelper.getAuraBase(te.getWorld(), te.getPos()) / 525.0F, 0.0F, 1.0F);
-		float vis = MathHelper.clamp(AuraHelper.getVis(te.getWorld(), te.getPos()) / 525.0F, 0.0F, 1.0F);
-		float flux = MathHelper.clamp(AuraHelper.getFlux(te.getWorld(), te.getPos()) / 525.0F, 0.0F, 1.0F);
+		mc.renderEngine.bindTexture(background);
+		RenderUtils.drawTexturedQuad(guiLeft + 60f, guiTop + 8f, 10f, 56f, 232f, 0f, zLevel);
+
+		mc.renderEngine.bindTexture(thaumcraftHUD);
+
+		float base = MathHelper.clamp((float)AuraHelper.getAuraBase(te.getWorld(), te.getPos()) / 525f, 0f, 1f);
+		float vis = MathHelper.clamp(AuraHelper.getVis(te.getWorld(), te.getPos()) / 525f, 0f, 1f);
+		float flux = MathHelper.clamp(AuraHelper.getFlux(te.getWorld(), te.getPos()) / 525f, 0f, 1f);
 		float count = (float)mc.ingameGUI.getUpdateCounter() + partialTicks;
-		float count2 = (float)mc.ingameGUI.getUpdateCounter() / 3.0F + partialTicks;
 
 		float startY;
-		if (flux + vis > 1.0F)
+		if (flux + vis > 1f)
 		{
-			startY = 1.0F / (flux + vis);
+			startY = 1f / (flux + vis);
 			base *= startY;
 			vis *= startY;
 			flux *= startY;
 		}
 
-		startY = 10.0F + (1.0F - vis) * 64.0F;
-		if (vis > 0.0F)
+		startY = 12f + (1f - vis) * 48f;
+		if (vis > 0f)
 		{
-			// bar texture
 			GL11.glPushMatrix();
 			GL11.glColor4f(0.7F, 0.4F, 0.9F, 1.0F);
-			RenderUtils.drawTexturedQuad(guiLeft + 5f, guiTop + startY, 88f, 56f, 8f, 64f * vis, zLevel);
+			RenderUtils.drawTexturedQuad(guiLeft + 61f, guiTop + startY, 8f, 48f * vis, 88f, 56f, zLevel);
 			GL11.glPopMatrix();
 
-			// overlay animation
 			GL11.glPushMatrix();
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
-			RenderUtils.drawTexturedQuad(guiLeft + 5f, guiTop + startY, 96f, (56f + (count % 64.0f)), 8f, 64f * vis, zLevel);
-			GL11.glBlendFunc(770, 771);
+			// todo: use aura gui
+			RenderUtils.drawTexturedQuad(guiLeft + 61f, guiTop + startY, 8f, 48f * vis, 96f, 56f + (count % 48f), zLevel);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glPopMatrix();
 
 			// text
 			GL11.glPushMatrix();
 			GL11.glScaled(0.5D, 0.5D, 0.5D);
-			mc.fontRenderer.drawString(String.format("%.1f", AuraHelper.getVis(te.getWorld(), te.getPos())), (guiLeft + 16) * 2, (int)(guiTop + startY) * 2, 15641343);
+			// TODO: center text
+			String msg = String.format("%.0f", AuraHelper.getVis(te.getWorld(), te.getPos()));
+			mc.fontRenderer.drawString(msg, (int)((guiLeft + 88 - mc.fontRenderer.getStringWidth(msg) * 0.25f) * 2), (guiTop + 10) * 2, 15641343);
 			GL11.glPopMatrix();
-			mc.renderEngine.bindTexture(new ResourceLocation("thaumcraft", "textures/gui/hud.png"));
+			mc.renderEngine.bindTexture(thaumcraftHUD);
 		}
 
-		if (flux > 0.0F)
+		if (flux > 0f)
 		{
-			startY = 10.0F + (1.0F - flux - vis) * 64.0F;
+			startY = 12f + (1f - flux - vis) * 48f;
 
-			// bar texture
 			GL11.glPushMatrix();
 			GL11.glColor4f(0.25F, 0.1F, 0.3F, 1.0F);
-			RenderUtils.drawTexturedQuad(guiLeft + 5f, guiTop + startY, 88, 56f, 8f, 64f * flux, zLevel);
+			RenderUtils.drawTexturedQuad(guiLeft + 61f, guiTop + startY, 8, 48f * flux, 88f, 56f, zLevel);
 			GL11.glPopMatrix();
 
-			// overlay animation
 			GL11.glPushMatrix();
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 			GL11.glColor4f(0.7F, 0.4F, 1.0F, 0.5F);
-			RenderUtils.drawTexturedQuad(guiLeft + 5f, guiTop + startY, 104f, (int)(120f - count2 % 64.0f), 8f, 64f * flux, zLevel);
-			GL11.glBlendFunc(770, 771);
+			// todo: use aura gui
+			RenderUtils.drawTexturedQuad(guiLeft + 61f, guiTop + startY, 8f, 48f * flux, 104f, 120f - (count / 1.5f) % 48f, zLevel);
+			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glPopMatrix();
 
 			// text
 			GL11.glPushMatrix();
 			GL11.glScaled(0.5D, 0.5D, 0.5D);
-			mc.fontRenderer.drawString(String.format("%.1f", AuraHelper.getFlux(te.getWorld(), te.getPos())), (guiLeft + 16) * 2, (int)(guiTop + startY - 4) * 2, 11145659);
+			// TODO: center text
+			String msg = String.format("%.0f", AuraHelper.getFlux(te.getWorld(), te.getPos()));
+			mc.fontRenderer.drawString(msg, (int)((guiLeft + 88 - fontRenderer.getStringWidth(msg) * 0.25f) * 2), (guiTop + 20) * 2, 11145659);
 			GL11.glPopMatrix();
-			mc.renderEngine.bindTexture(new ResourceLocation("thaumcraft", "textures/gui/hud.png"));
+			mc.renderEngine.bindTexture(thaumcraftHUD);
 		}
 
-		// bar background
+		startY = 10f + (1f - base) * 48f;
 		GL11.glPushMatrix();
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderUtils.drawTexturedQuad(guiLeft + 1f, guiTop + 1f, 72f, 48f, 16f, 80f, zLevel);
-		GL11.glPopMatrix();
-
-		//
-		startY = 8.0F + (1.0F - base) * 64.0F;
-		GL11.glPushMatrix();
-		RenderUtils.drawTexturedQuad(guiLeft + 2f, guiTop + startY, 117f, 61f, 14f, 5f, zLevel);
+		GL11.glColor4f(1f, 1f, 1f, 1f);
+		RenderUtils.drawTexturedQuad(guiLeft + 58f, guiTop + startY, 14f, 5f, 117f, 61f, zLevel);
 		GL11.glPopMatrix();
 	}
 }

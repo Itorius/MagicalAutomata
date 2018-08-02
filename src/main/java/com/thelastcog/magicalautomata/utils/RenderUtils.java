@@ -14,10 +14,10 @@ public class RenderUtils
 		float var8 = 0.00390625F;
 		BufferBuilder builder = Tessellator.getInstance().getBuffer();
 		builder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-		builder.pos((double)(x + 0.0F), (double)(y + texCoordY), zLevel).tex((double)((width + 0.0F) * var7), (double)((height + texCoordY) * var8)).endVertex();
-		builder.pos((double)(x + texCoordX), (double)(y + texCoordY), zLevel).tex((double)((width + texCoordX) * var7), (double)((height + texCoordY) * var8)).endVertex();
-		builder.pos((double)(x + texCoordX), (double)(y + 0.0F), zLevel).tex((double)((width + texCoordX) * var7), (double)((height + 0.0F) * var8)).endVertex();
-		builder.pos((double)(x + 0.0F), (double)(y + 0.0F), zLevel).tex((double)((width + 0.0F) * var7), (double)((height + 0.0F) * var8)).endVertex();
+		builder.pos((double)(x + 0.0F), (double)(y + height), zLevel).tex((double)((texCoordX + 0.0F) * var7), (double)((texCoordY + height) * var8)).endVertex();
+		builder.pos((double)(x + width), (double)(y + height), zLevel).tex((double)((texCoordX + width) * var7), (double)((texCoordY + height) * var8)).endVertex();
+		builder.pos((double)(x + width), (double)(y + 0.0F), zLevel).tex((double)((texCoordX + width) * var7), (double)((texCoordY + 0.0F) * var8)).endVertex();
+		builder.pos((double)(x + 0.0F), (double)(y + 0.0F), zLevel).tex((double)((texCoordX + 0.0F) * var7), (double)((texCoordY + 0.0F) * var8)).endVertex();
 		Tessellator.getInstance().draw();
 	}
 }
