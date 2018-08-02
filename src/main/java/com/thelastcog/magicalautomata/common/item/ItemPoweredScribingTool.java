@@ -30,7 +30,17 @@ public class ItemPoweredScribingTool extends MAItem implements IScribeTools
         this.setNoRepair();
     }
 
-    @Override
+	@Override public int getDamage(ItemStack stack)
+	{
+		return super.getDamage(stack);
+	}
+
+	@Override public void setDamage(ItemStack stack, int damage)
+	{
+		super.setDamage(stack, damage);
+	}
+
+	@Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn)
     {
         super.addInformation(stack, worldIn, tooltip, flagIn);
