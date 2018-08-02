@@ -3,10 +3,12 @@ package com.thelastcog.magicalautomata.common.tileentity;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -30,7 +32,7 @@ public class TileEntityVisReplenisher extends TileEntity implements ITickable, I
 			{
 				timer = 100;
 
-				int requiredEnergy = MathUtils.clamp((int)Math.pow(10, (AuraHelper.getVis(world, pos) / 100) * 2.5), 1000, 100000000);
+				int requiredEnergy = MathHelper.clamp((int)Math.pow(10, (AuraHelper.getVis(world, pos) / 100) * 2.5), 1000, 100000000);
 
 				if (energyStorage.getEnergyStored() >= requiredEnergy)
 				{
@@ -75,4 +77,8 @@ public class TileEntityVisReplenisher extends TileEntity implements ITickable, I
 	{
 		return timer;
 	}
+
+    public boolean canInteractWith(EntityPlayer playerIn) {
+        return !isInvalid() && playerIn.getDistanceSq(pos.add(0.5D, 0.5D, 0.5D)) <= 64D;
+    }
 }

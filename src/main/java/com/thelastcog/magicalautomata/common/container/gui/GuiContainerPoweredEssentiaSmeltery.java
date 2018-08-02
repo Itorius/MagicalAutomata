@@ -1,5 +1,6 @@
-package com.thelastcog.magicalautomata.common.container;
+package com.thelastcog.magicalautomata.common.container.gui;
 
+import com.thelastcog.magicalautomata.common.container.ContainerPoweredEssentiaSmeltery;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.util.ResourceLocation;
 

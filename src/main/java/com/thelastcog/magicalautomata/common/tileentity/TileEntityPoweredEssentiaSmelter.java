@@ -59,13 +59,13 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 		{
 			switch (slot)
 			{
-				case 0:
-					AspectList al;
-					return (al = ThaumcraftCraftingManager.getObjectTags(stack)) != null && al.size() > 0;
-				case 1:
-					return stack.hasCapability(CapabilityEnergy.ENERGY, null);
-				default:
-					return false;
+			case 0:
+				AspectList al;
+				return (al = ThaumcraftCraftingManager.getObjectTags(stack)) != null && al.size() > 0;
+			case 1:
+				return stack.hasCapability(CapabilityEnergy.ENERGY, null);
+			default:
+				return false;
 			}
 		}
 
@@ -103,7 +103,8 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 				if (existing.isEmpty())
 				{
 					stacks.set(slot, reachedLimit ? ItemHandlerHelper.copyStackWithSize(stack, limit) : stack);
-				} else
+				}
+				else
 				{
 					existing.grow(reachedLimit ? limit : stack.getCount());
 				}
@@ -126,6 +127,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 	{
 		return 1.0f;
 	}
+
 	public int getSpeed()
 	{
 		return 10;
@@ -172,7 +174,8 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 					smeltItem();
 					shouldMarkDirty = true;
 				}
-			} else
+			}
+			else
 				furnaceCookTime = 0;
 		}
 
@@ -238,7 +241,8 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 						al.reduce(a, 1);
 						++flux;
 					}
-				} else if (getEfficiency() > 1.0F) // Gain extra vis?
+				}
+				else if (getEfficiency() > 1.0F) // Gain extra vis?
 				{
 					int qq = al.getAmount(a);
 					for (int q = 0; q < qq; ++q)
@@ -283,7 +287,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 		int deep = 1;
 		while ((te = world.getTileEntity(pos.up(deep))) != null && te instanceof TileAlembic)
 		{
-			alembic = (TileAlembic) te;
+			alembic = (TileAlembic)te;
 			if (alembic.amount > 0 && alembic.aspect == aspect && alembic.addToContainer(aspect, 1) == 0)
 			{
 				return true;
@@ -293,7 +297,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 		deep = 1;
 		while ((te = world.getTileEntity(pos.up(deep))) != null && te instanceof TileAlembic)
 		{
-			alembic = (TileAlembic) te;
+			alembic = (TileAlembic)te;
 			if ((alembic.aspectFilter == null || alembic.aspectFilter == aspect) && alembic.addToContainer(aspect, 1) == 0)
 			{
 				return true;
@@ -308,7 +312,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 	{
 		if (this.capacity == 0)
 			return 0;
-		return (this.vis / (float) this.capacity) * height;
+		return (this.vis / (float)this.capacity) * height;
 	}
 
 	@SideOnly(value = Side.CLIENT)
@@ -316,13 +320,13 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 	{
 		if (this.smeltTime <= 0)
 			this.smeltTime = 1;
-		return (this.furnaceCookTime / (float) this.smeltTime) * height;
+		return (this.furnaceCookTime / (float)this.smeltTime) * height;
 	}
 
 	@SideOnly(value = Side.CLIENT)
 	public float getEnergyScaled(int height)
 	{
-		return (energyStorage.getEnergyStored() / (float) energyStorage.getMaxEnergyStored()) * height;
+		return (energyStorage.getEnergyStored() / (float)energyStorage.getMaxEnergyStored()) * height;
 	}
 
 	@Override
@@ -341,7 +345,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing)
 	{
 		if (capability == CapabilityEnergy.ENERGY)
-			return (T) energyStorage;
+			return (T)energyStorage;
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 			return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(itemStackHandler);
 
@@ -356,6 +360,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 		energyStorage.readFromNBT(compound.getCompoundTag("energy"));
 		itemStackHandler.deserializeNBT(compound.getCompoundTag("item"));
 
+		aspects.readFromNBT(compound, "aspects");
 		vis = compound.getInteger("vis");
 		furnaceCookTime = compound.getInteger("furnaceCookTime");
 		smeltTime = compound.getInteger("smeltTime");
@@ -372,6 +377,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 
 		compound.setTag("item", itemStackHandler.serializeNBT());
 
+		aspects.writeToNBT(compound, "aspects");
 		compound.setInteger("vis", vis);
 		compound.setInteger("furnaceCookTime", furnaceCookTime);
 		compound.setInteger("smeltTime", smeltTime);
