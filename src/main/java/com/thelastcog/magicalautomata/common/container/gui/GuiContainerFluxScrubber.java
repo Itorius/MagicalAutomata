@@ -73,10 +73,10 @@ public class GuiContainerFluxScrubber extends GuiContainer
 
 		mc.renderEngine.bindTexture(thaumcraftHUD);
 
-		float base = MathHelper.clamp((float)AuraHelper.getAuraBase(te.getWorld(), te.getPos()) / 525f, 0f, 1f);
+		float base = MathHelper.clamp((float) AuraHelper.getAuraBase(te.getWorld(), te.getPos()) / 525f, 0f, 1f);
 		float vis = MathHelper.clamp(AuraHelper.getVis(te.getWorld(), te.getPos()) / 525f, 0f, 1f);
 		float flux = MathHelper.clamp(AuraHelper.getFlux(te.getWorld(), te.getPos()) / 525f, 0f, 1f);
-		float count = (float)mc.ingameGUI.getUpdateCounter() + partialTicks;
+		float count = (float) mc.ingameGUI.getUpdateCounter() + partialTicks;
 
 		float startY;
 		if (flux + vis > 1f)
@@ -95,20 +95,21 @@ public class GuiContainerFluxScrubber extends GuiContainer
 			RenderUtils.drawTexturedQuad(guiLeft + 61f, guiTop + startY, 8f, 48f * vis, 88f, 56f, zLevel);
 			GL11.glPopMatrix();
 
+			mc.renderEngine.bindTexture(background);
 			GL11.glPushMatrix();
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 0.5F);
-			// todo: use aura gui
-			RenderUtils.drawTexturedQuad(guiLeft + 61f, guiTop + startY, 8f, 48f * vis, 96f, 56f + (count % 48f), zLevel);
+			RenderUtils.drawTexturedQuad(guiLeft + 61f, guiTop + startY, 8f, 48f * vis, 200f, 52f + count % 48f, zLevel);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glPopMatrix();
+			mc.renderEngine.bindTexture(thaumcraftHUD);
 
 			// text
 			GL11.glPushMatrix();
 			GL11.glScaled(0.5D, 0.5D, 0.5D);
 			// TODO: center text
 			String msg = String.format("%.0f", AuraHelper.getVis(te.getWorld(), te.getPos()));
-			mc.fontRenderer.drawString(msg, (int)((guiLeft + 88 - mc.fontRenderer.getStringWidth(msg) * 0.25f) * 2), (guiTop + 10) * 2, 15641343);
+			mc.fontRenderer.drawString(msg, (int) ((guiLeft + 88 - mc.fontRenderer.getStringWidth(msg) * 0.25f) * 2), (int) ((guiTop + 24 - mc.fontRenderer.FONT_HEIGHT * 0.5f) * 2), 15641343);
 			GL11.glPopMatrix();
 			mc.renderEngine.bindTexture(thaumcraftHUD);
 		}
@@ -122,20 +123,21 @@ public class GuiContainerFluxScrubber extends GuiContainer
 			RenderUtils.drawTexturedQuad(guiLeft + 61f, guiTop + startY, 8, 48f * flux, 88f, 56f, zLevel);
 			GL11.glPopMatrix();
 
+			mc.renderEngine.bindTexture(background);
 			GL11.glPushMatrix();
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE);
 			GL11.glColor4f(0.7F, 0.4F, 1.0F, 0.5F);
-			// todo: use aura gui
-			RenderUtils.drawTexturedQuad(guiLeft + 61f, guiTop + startY, 8f, 48f * flux, 104f, 120f - (count / 1.5f) % 48f, zLevel);
+			RenderUtils.drawTexturedQuad(guiLeft + 61f, guiTop + startY, 8f, 48f * flux, 208f, 100f - count % 48f, zLevel);
 			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			GL11.glPopMatrix();
+			mc.renderEngine.bindTexture(thaumcraftHUD);
 
 			// text
 			GL11.glPushMatrix();
 			GL11.glScaled(0.5D, 0.5D, 0.5D);
 			// TODO: center text
 			String msg = String.format("%.0f", AuraHelper.getFlux(te.getWorld(), te.getPos()));
-			mc.fontRenderer.drawString(msg, (int)((guiLeft + 88 - fontRenderer.getStringWidth(msg) * 0.25f) * 2), (guiTop + 20) * 2, 11145659);
+			mc.fontRenderer.drawString(msg, (int) ((guiLeft + 88 - fontRenderer.getStringWidth(msg) * 0.25f) * 2), (guiTop + 28) * 2, 11145659);
 			GL11.glPopMatrix();
 			mc.renderEngine.bindTexture(thaumcraftHUD);
 		}

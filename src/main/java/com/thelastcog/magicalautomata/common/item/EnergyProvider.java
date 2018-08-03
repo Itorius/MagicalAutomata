@@ -11,11 +11,12 @@ import net.minecraftforge.energy.CapabilityEnergy;
 
 import javax.annotation.Nullable;
 
-public class EnergyProvider implements ICapabilityProvider {
+public abstract class EnergyProvider implements ICapabilityProvider
+{
 
-    public final CustomEnergyStorage energyStorage;
+	//public final CustomEnergyStorage energyStorage;
 
-    public EnergyProvider(final ItemStack stack, ItemPoweredScribingTool item)
+   /* public EnergyProvider(final ItemStack stack, ItemPoweredScribingTools item)
     {
         this.energyStorage = new CustomEnergyStorage(item.maxPower, item.transfer, item.transfer)
         {
@@ -42,9 +43,9 @@ public class EnergyProvider implements ICapabilityProvider {
                 return super.setEnergyStored(energyAmount);
             }
         };
-    }
+    }*/
 
-    @Override
+   /* @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing)
     {
         return this.getCapability(capability, facing) != null;
@@ -59,5 +60,5 @@ public class EnergyProvider implements ICapabilityProvider {
             return CapabilityEnergy.ENERGY.cast(this.energyStorage);
         }
         return null;
-    }
+    }*/
 }

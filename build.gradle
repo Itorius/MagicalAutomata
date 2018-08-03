@@ -36,13 +36,26 @@ repositories {
     maven {
         name = "CoFH Maven"
         url = "http://maven.covers1624.net"
-    } 
+    }
+maven {
+		name = "ChickenBones Maven"
+		url = "http://chickenbones.net/maven/"
+	}
+maven {
+		name = "JEI Maven"
+		url = "http://dvs1.progwml6.com/files/maven"
+	}
 }
 
 dependencies {
     compile fileTree(dir: 'lib', include: '*.jar')
     deobfCompile "mcjty.theoneprobe:TheOneProbe-1.12:1.12-1.4.14-7"
     deobfCompile "cofh:RedstoneFlux:1.12-2.0.2.4:universal"
+    deobfCompile "codechicken:CodeChickenLib:1.12.2-3.2.1.349:deobf"    
+    deobfCompile "mezz.jei:jei_1.12.2:4.11.0.206"
+    deobfCompile "cofh:CoFHCore:1.12.2-4.5.3.20:deobf"
+    deobfCompile "cofh:ThermalFoundation:1.12.2-2.5.0.19:deobf"
+    deobfCompile "cofh:ThermalExpansion:1.12.2-5.5.0.29:deobf"
 }
 
 processResources {
