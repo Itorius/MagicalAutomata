@@ -8,12 +8,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 
-import com.thelastcog.magicalautomata.common.container.ContainerFluxScrubber;
+import com.thelastcog.magicalautomata.common.container.ContainerAuraManipulator;
 import com.thelastcog.magicalautomata.common.container.ContainerPoweredEssentiaSmeltery;
-import com.thelastcog.magicalautomata.common.container.gui.GuiContainerFluxScrubber;
+import com.thelastcog.magicalautomata.common.container.gui.GuiContainerAuraManipulator;
 import com.thelastcog.magicalautomata.common.container.gui.GuiContainerPoweredEssentiaSmeltery;
 import com.thelastcog.magicalautomata.common.tileentity.TileEntityFluxScrubber;
 import com.thelastcog.magicalautomata.common.tileentity.TileEntityPoweredEssentiaSmelter;
+import com.thelastcog.magicalautomata.common.tileentity.TileEntityVisReplenisher;
 
 public class GuiProxy implements IGuiHandler
 {
@@ -24,7 +25,9 @@ public class GuiProxy implements IGuiHandler
 		if (te instanceof TileEntityPoweredEssentiaSmelter)
 			return new ContainerPoweredEssentiaSmeltery(player.inventory, (TileEntityPoweredEssentiaSmelter)te);
 		if (te instanceof TileEntityFluxScrubber)
-			return new ContainerFluxScrubber(player.inventory, (TileEntityFluxScrubber)te);
+			return new ContainerAuraManipulator(player.inventory, te);
+		if (te instanceof TileEntityVisReplenisher)
+			return new ContainerAuraManipulator(player.inventory, te);
 
 		return null;
 	}
@@ -41,7 +44,12 @@ public class GuiProxy implements IGuiHandler
 		if (te instanceof TileEntityFluxScrubber)
 		{
 			TileEntityFluxScrubber containerTileEntity = (TileEntityFluxScrubber)te;
-			return new GuiContainerFluxScrubber(containerTileEntity, new ContainerFluxScrubber(player.inventory, containerTileEntity));
+			return new GuiContainerAuraManipulator(containerTileEntity, new ContainerAuraManipulator(player.inventory, containerTileEntity));
+		}
+		if (te instanceof TileEntityVisReplenisher)
+		{
+			TileEntityVisReplenisher containerTileEntity = (TileEntityVisReplenisher)te;
+			return new GuiContainerAuraManipulator(containerTileEntity, new ContainerAuraManipulator(player.inventory, containerTileEntity));
 		}
 		return null;
 	}

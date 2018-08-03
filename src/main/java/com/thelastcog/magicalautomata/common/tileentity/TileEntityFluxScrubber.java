@@ -15,8 +15,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
@@ -28,6 +27,7 @@ import thaumcraft.api.aura.AuraHelper;
 public class TileEntityFluxScrubber extends TileEntity implements ITickable, ICapabilityProvider
 {
 	private int timer = 2000;
+
 	private CustomEnergyStorage energyStorage = new CustomEnergyStorage(1000000000, 25000000)
 	{
 		@Override public int receiveEnergy(int maxReceive, boolean simulate)
@@ -36,7 +36,7 @@ public class TileEntityFluxScrubber extends TileEntity implements ITickable, ICa
 			return super.receiveEnergy(maxReceive, simulate);
 		}
 	};
-	private ItemStackHandler itemStackHandler = new ItemStackHandler(2)
+	private ItemStackHandler itemStackHandler = new ItemStackHandler(1)
 	{
 		@Override
 		protected void onContentsChanged(int slot)
@@ -47,7 +47,7 @@ public class TileEntityFluxScrubber extends TileEntity implements ITickable, ICa
 		@Override
 		public boolean isItemValid(int slot, @Nonnull ItemStack stack)
 		{
-			return stack.hasCapability(CapabilityEnergy.ENERGY, null);
+			return stack.hasCapability(CapabilityEnergy.ENERGY, null) && stack.getCapability(CapabilityEnergy.ENERGY, null).canExtract();
 		}
 
 		@Override
@@ -101,12 +101,19 @@ public class TileEntityFluxScrubber extends TileEntity implements ITickable, ICa
 	{
 		if (world != null && !world.isRemote)
 		{
+			ItemStack itemStack = itemStackHandler.getStackInSlot(0);
+			if (!itemStack.isEmpty() && itemStack.hasCapability(CapabilityEnergy.ENERGY, null))
+			{
+				IEnergyStorage itemEnergy = itemStack.getCapability(CapabilityEnergy.ENERGY, null);
+				int energy = itemEnergy.extractEnergy(Math.min(energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored(), energyStorage.getMaxReceive()), false);
+				energyStorage.receiveEnergy(energy, false);
+			}
+
 			if (--timer == 0)
 			{
 				timer = 2000;
 
 				int requiredEnergy = MathHelper.clamp((int)Math.pow(10, AuraHelper.getFlux(world, pos) / 5), 1000, Integer.MAX_VALUE);
-
 				if (energyStorage.getEnergyStored() >= requiredEnergy)
 				{
 					AuraHelper.drainFlux(world, pos, 1, false);
@@ -116,12 +123,6 @@ public class TileEntityFluxScrubber extends TileEntity implements ITickable, ICa
 				}
 			}
 		}
-	}
-
-	@SideOnly(value = Side.CLIENT)
-	public float getEnergyScaled(int height)
-	{
-		return (energyStorage.getEnergyStored() / (float)energyStorage.getMaxEnergyStored()) * height;
 	}
 
 	@Override
@@ -162,11 +163,6 @@ public class TileEntityFluxScrubber extends TileEntity implements ITickable, ICa
 		if (compound.hasKey("item"))
 			itemStackHandler.deserializeNBT(compound.getCompoundTag("item"));
 		super.readFromNBT(compound);
-	}
-
-	public int getTimer()
-	{
-		return timer;
 	}
 
 	@Nullable

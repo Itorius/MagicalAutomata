@@ -1,6 +1,7 @@
 package com.thelastcog.magicalautomata.common.container.gui;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.energy.CapabilityEnergy;
@@ -9,20 +10,19 @@ import net.minecraftforge.energy.IEnergyStorage;
 import org.lwjgl.opengl.GL11;
 
 import com.thelastcog.magicalautomata.MAInfo;
-import com.thelastcog.magicalautomata.common.container.ContainerFluxScrubber;
-import com.thelastcog.magicalautomata.common.tileentity.TileEntityFluxScrubber;
+import com.thelastcog.magicalautomata.common.container.ContainerAuraManipulator;
 import com.thelastcog.magicalautomata.utils.RenderUtils;
 
 import thaumcraft.api.aura.AuraHelper;
 
-public class GuiContainerFluxScrubber extends GuiContainer
+public class GuiContainerAuraManipulator extends GuiContainer
 {
 	private ResourceLocation background = new ResourceLocation(MAInfo.MODID, "textures/gui/aura_manipulator_gui.png");
 	private ResourceLocation thaumcraftHUD = new ResourceLocation("thaumcraft", "textures/gui/hud.png");
 
-	private TileEntityFluxScrubber te;
+	private TileEntity te;
 
-	public GuiContainerFluxScrubber(TileEntityFluxScrubber tileEntity, ContainerFluxScrubber container)
+	public GuiContainerAuraManipulator(TileEntity tileEntity, ContainerAuraManipulator container)
 	{
 		super(container);
 
@@ -58,7 +58,8 @@ public class GuiContainerFluxScrubber extends GuiContainer
 		GL11.glEnable(GL11.GL_BLEND);
 		RenderUtils.drawTexturedQuad(guiLeft, guiTop, xSize, ySize, 0f, 0f, zLevel);
 
-		float height = te.getEnergyScaled(46);
+		IEnergyStorage energyStorage = te.getCapability(CapabilityEnergy.ENERGY, null);
+		float height = (energyStorage.getEnergyStored() / (float)energyStorage.getMaxEnergyStored()) * 46;
 		RenderUtils.drawTexturedQuad(guiLeft + 106, guiTop + 59f - height, 9f, height, 216f, 46f - height, zLevel);
 
 		renderAuraDisplay(partialTicks);
@@ -73,10 +74,10 @@ public class GuiContainerFluxScrubber extends GuiContainer
 
 		mc.renderEngine.bindTexture(thaumcraftHUD);
 
-		float base = MathHelper.clamp((float) AuraHelper.getAuraBase(te.getWorld(), te.getPos()) / 525f, 0f, 1f);
+		float base = MathHelper.clamp((float)AuraHelper.getAuraBase(te.getWorld(), te.getPos()) / 525f, 0f, 1f);
 		float vis = MathHelper.clamp(AuraHelper.getVis(te.getWorld(), te.getPos()) / 525f, 0f, 1f);
 		float flux = MathHelper.clamp(AuraHelper.getFlux(te.getWorld(), te.getPos()) / 525f, 0f, 1f);
-		float count = (float) mc.ingameGUI.getUpdateCounter() + partialTicks;
+		float count = (float)mc.ingameGUI.getUpdateCounter() + partialTicks;
 
 		float startY;
 		if (flux + vis > 1f)
@@ -107,7 +108,7 @@ public class GuiContainerFluxScrubber extends GuiContainer
 			GL11.glPushMatrix();
 			GL11.glScaled(0.5D, 0.5D, 0.5D);
 			String msg = String.format("%.0f", AuraHelper.getVis(te.getWorld(), te.getPos()));
-			mc.fontRenderer.drawString(msg, (int) ((guiLeft + 88 - mc.fontRenderer.getStringWidth(msg) * 0.25f) * 2), (int) ((guiTop + 24 - mc.fontRenderer.FONT_HEIGHT * 0.5f) * 2), 15641343);
+			mc.fontRenderer.drawString(msg, (int)((guiLeft + 88 - mc.fontRenderer.getStringWidth(msg) * 0.25f) * 2), (int)((guiTop + 24 - mc.fontRenderer.FONT_HEIGHT * 0.5f) * 2), 15641343);
 			GL11.glPopMatrix();
 			mc.renderEngine.bindTexture(thaumcraftHUD);
 		}
@@ -133,7 +134,7 @@ public class GuiContainerFluxScrubber extends GuiContainer
 			GL11.glPushMatrix();
 			GL11.glScaled(0.5D, 0.5D, 0.5D);
 			String msg = String.format("%.0f", AuraHelper.getFlux(te.getWorld(), te.getPos()));
-			mc.fontRenderer.drawString(msg, (int) ((guiLeft + 88 - fontRenderer.getStringWidth(msg) * 0.25f) * 2), (guiTop + 28) * 2, 11145659);
+			mc.fontRenderer.drawString(msg, (int)((guiLeft + 88 - fontRenderer.getStringWidth(msg) * 0.25f) * 2), (guiTop + 28) * 2, 11145659);
 			GL11.glPopMatrix();
 			mc.renderEngine.bindTexture(thaumcraftHUD);
 		}

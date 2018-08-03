@@ -60,7 +60,7 @@ dependencies {
     deobfCompile "cofh:CoFHCore:1.12.2-4.5.3.20:deobf"
     deobfCompile "cofh:ThermalFoundation:1.12.2-2.5.0.19:deobf"
     deobfCompile "cofh:ThermalExpansion:1.12.2-5.5.0.29:deobf"
-    deobfCompile "inventory-tweaks:InventoryTweaks:1.64-dev:deobf"
+    deobfCompile "thaumcraft:Thaumcraft:1.12.2:6.1.BETA20"
 }
 
 processResources {

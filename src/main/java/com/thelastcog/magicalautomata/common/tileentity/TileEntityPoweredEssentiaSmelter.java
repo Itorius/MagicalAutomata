@@ -63,7 +63,7 @@ public class TileEntityPoweredEssentiaSmelter extends TileEntity implements ITic
 				AspectList al;
 				return (al = ThaumcraftCraftingManager.getObjectTags(stack)) != null && al.size() > 0;
 			case 1:
-				return stack.hasCapability(CapabilityEnergy.ENERGY, null);
+				return stack.hasCapability(CapabilityEnergy.ENERGY, null) && stack.getCapability(CapabilityEnergy.ENERGY, null).canExtract();
 			default:
 				return false;
 			}
