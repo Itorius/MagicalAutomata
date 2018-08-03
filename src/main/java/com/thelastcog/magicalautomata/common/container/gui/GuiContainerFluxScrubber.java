@@ -104,10 +104,8 @@ public class GuiContainerFluxScrubber extends GuiContainer
 			GL11.glPopMatrix();
 			mc.renderEngine.bindTexture(thaumcraftHUD);
 
-			// text
 			GL11.glPushMatrix();
 			GL11.glScaled(0.5D, 0.5D, 0.5D);
-			// TODO: center text
 			String msg = String.format("%.0f", AuraHelper.getVis(te.getWorld(), te.getPos()));
 			mc.fontRenderer.drawString(msg, (int) ((guiLeft + 88 - mc.fontRenderer.getStringWidth(msg) * 0.25f) * 2), (int) ((guiTop + 24 - mc.fontRenderer.FONT_HEIGHT * 0.5f) * 2), 15641343);
 			GL11.glPopMatrix();
@@ -132,10 +130,8 @@ public class GuiContainerFluxScrubber extends GuiContainer
 			GL11.glPopMatrix();
 			mc.renderEngine.bindTexture(thaumcraftHUD);
 
-			// text
 			GL11.glPushMatrix();
 			GL11.glScaled(0.5D, 0.5D, 0.5D);
-			// TODO: center text
 			String msg = String.format("%.0f", AuraHelper.getFlux(te.getWorld(), te.getPos()));
 			mc.fontRenderer.drawString(msg, (int) ((guiLeft + 88 - fontRenderer.getStringWidth(msg) * 0.25f) * 2), (guiTop + 28) * 2, 11145659);
 			GL11.glPopMatrix();

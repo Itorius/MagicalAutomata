@@ -1,10 +1,10 @@
 package com.thelastcog.magicalautomata.common.item;
 
-import cofh.core.util.helpers.EnergyHelper;
-import cofh.thermalexpansion.block.machine.TileCharger;
-import cofh.thermalexpansion.gui.container.machine.ContainerCharger;
-import com.thelastcog.magicalautomata.MagicalAutomata;
-import com.thelastcog.magicalautomata.common.CustomEnergyStorage;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,32 +13,23 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.energy.CapabilityEnergy;
-import net.minecraftforge.energy.IEnergyStorage;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import thaumcraft.api.items.IScribeTools;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.List;
+import com.thelastcog.magicalautomata.common.CustomEnergyStorage;
+
+import thaumcraft.api.items.IScribeTools;
 
 public class ItemPoweredScribingTools extends MAItem implements IScribeTools, ICapabilityProvider
 {
-	//public int maxPower;
-	//public int transfer;
 	public CustomEnergyStorage energyStorage = new CustomEnergyStorage(10000, 100)
 	{
 
 	};
 
-	AttachCapabilitiesEvent<ItemStack>
-
 	public ItemPoweredScribingTools()
 	{
 		super("powered_scribing_tool");
-		//this.maxPower = maxPower;
-		//this.transfer = transfer;
 		this.setMaxStackSize(1);
 		this.setNoRepair();
 	}
@@ -87,6 +78,7 @@ public class ItemPoweredScribingTools extends MAItem implements IScribeTools, IC
 		return true;
 	}
 
+	//<editor-fold desc="Deprecated">
 	/*public void setEnergy(ItemStack stack, int energyAmount)
 	{
 		MagicalAutomata.logger.info("-2");
@@ -182,12 +174,13 @@ public class ItemPoweredScribingTools extends MAItem implements IScribeTools, IC
 		}
 		return 0;
 	}*/
+	//</editor-fold>
 
 	@Nullable
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt)
 	{
-		return energyStoraged;
+		return this;
 	}
 
 	@Override
@@ -203,7 +196,7 @@ public class ItemPoweredScribingTools extends MAItem implements IScribeTools, IC
 	public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
 	{
 		if (capability == CapabilityEnergy.ENERGY)
-			return (T) energyStorage;
+			return (T)energyStorage;
 		return null;
 	}
 }
