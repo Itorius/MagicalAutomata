@@ -1,64 +1,62 @@
 package com.thelastcog.magicalautomata.common.item;
 
-import com.thelastcog.magicalautomata.MagicalAutomata;
-import com.thelastcog.magicalautomata.common.CustomEnergyStorage;
+import javax.annotation.Nullable;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.energy.CapabilityEnergy;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.capabilities.ICapabilitySerializable;
+import net.minecraftforge.energy.IEnergyStorage;
 
-import javax.annotation.Nullable;
+import com.thelastcog.magicalautomata.common.CustomEnergyStorage;
 
-public abstract class EnergyProvider implements ICapabilityProvider
+public class EnergyProvider implements ICapabilitySerializable<NBTTagCompound>
 {
+	@CapabilityInject(IEnergyStorage.class)
+	public static Capability<IEnergyStorage> ENERGY = null;
 
-	//public final CustomEnergyStorage energyStorage;
+	public final CustomEnergyStorage energyStorage = new CustomEnergyStorage(10000, 100)
+	{
+		@Override public int receiveEnergy(int maxReceive, boolean simulate)
+		{
+			return super.receiveEnergy(maxReceive, simulate);
+		}
+	};
 
-   /* public EnergyProvider(final ItemStack stack, ItemPoweredScribingTools item)
-    {
-        this.energyStorage = new CustomEnergyStorage(item.maxPower, item.transfer, item.transfer)
-        {
-            @Override
-            public int getEnergyStored()
-            {
-                if (stack.hasTagCompound())
-                {
-                    return stack.getTagCompound().getInteger("Energy");
-                }
-                else { return setEnergyStored(0).getEnergyStored(); }
-            }
+	public ItemStack stack;
 
-            @Override
-            public CustomEnergyStorage setEnergyStored(int energyAmount)
-            {
-                if (!stack.hasTagCompound())
-                {
-                    MagicalAutomata.logger.info("REEEE");
-                    stack.setTagCompound(new NBTTagCompound());
-                }
+	public EnergyProvider(ItemStack stack)
+	{
+		this.stack = stack;
+	}
 
-                stack.getTagCompound().setInteger("Energy", energyAmount);
-                return super.setEnergyStored(energyAmount);
-            }
-        };
-    }*/
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing)
+	{
+		return getCapability(capability, facing) != null;
+	}
 
-   /* @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing)
-    {
-        return this.getCapability(capability, facing) != null;
-    }
+	@Nullable
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing)
+	{
+		if (capability == ENERGY)
+			return (T)energyStorage;
 
-    @Nullable
-    @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing)
-    {
-        if (capability == CapabilityEnergy.ENERGY)
-        {
-            return CapabilityEnergy.ENERGY.cast(this.energyStorage);
-        }
-        return null;
-    }*/
+		return null;
+	}
+
+	@Override public NBTTagCompound serializeNBT()
+	{
+		NBTTagCompound compound = new NBTTagCompound();
+		energyStorage.writeToNBT(compound);
+		return compound;
+	}
+
+	@Override public void deserializeNBT(NBTTagCompound nbt)
+	{
+		energyStorage.readFromNBT(nbt);
+	}
 }

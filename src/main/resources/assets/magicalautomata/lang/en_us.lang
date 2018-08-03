@@ -2,7 +2,7 @@
 itemGroup.tabMagicalAutomata=Magical Automata
 
 # Items
-item.magicalautomata:powered_scribing_tool.name=Powered Scribing Tool
+item.magicalautomata:powered_scribing_tools.name=Powered Scribing Tools
 
 # Blocks
 tile.magicalautomata:vis_replenisher.name=Vis Replenisher
