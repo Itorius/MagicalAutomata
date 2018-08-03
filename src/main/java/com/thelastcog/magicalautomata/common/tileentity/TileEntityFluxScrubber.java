@@ -28,7 +28,7 @@ public class TileEntityFluxScrubber extends TileEntity implements ITickable, ICa
 {
 	private int timer = 2000;
 
-	private CustomEnergyStorage energyStorage = new CustomEnergyStorage(1000000000, 25000000)
+	private CustomEnergyStorage energyStorage = new CustomEnergyStorage(1000000000, Integer.MAX_VALUE)
 	{
 		@Override public int receiveEnergy(int maxReceive, boolean simulate)
 		{

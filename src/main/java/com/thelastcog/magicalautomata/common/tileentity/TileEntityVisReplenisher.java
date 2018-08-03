@@ -28,7 +28,7 @@ public class TileEntityVisReplenisher extends TileEntity implements ITickable, I
 {
 	private int timer = 100;
 
-	private CustomEnergyStorage energyStorage = new CustomEnergyStorage(1000000000, 25000000)
+	private CustomEnergyStorage energyStorage = new CustomEnergyStorage(1000000000, Integer.MAX_VALUE)
 	{
 		@Override public int receiveEnergy(int maxReceive, boolean simulate)
 		{

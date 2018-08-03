@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.thelastcog.magicalautomata.MAInfo;
 import com.thelastcog.magicalautomata.common.container.ContainerAuraManipulator;
+import com.thelastcog.magicalautomata.utils.MathUtils;
 import com.thelastcog.magicalautomata.utils.RenderUtils;
 
 import thaumcraft.api.aura.AuraHelper;
@@ -43,7 +44,7 @@ public class GuiContainerAuraManipulator extends GuiContainer
 		if (isPointInRegion(106, 13, 9, 46, mouseX, mouseY))
 		{
 			IEnergyStorage energy = te.getCapability(CapabilityEnergy.ENERGY, null);
-			drawHoveringText("Energy: " + energy.getEnergyStored() + "/" + energy.getMaxEnergyStored(), mouseX - guiLeft, mouseY - guiTop);
+			drawHoveringText(MathUtils.ToSI(energy.getEnergyStored(), null) + "/" + MathUtils.ToSI(energy.getMaxEnergyStored(), null) + "RF", mouseX - guiLeft, mouseY - guiTop);
 		}
 
 		super.drawGuiContainerForegroundLayer(mouseX, mouseY);

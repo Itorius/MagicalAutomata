@@ -24,7 +24,10 @@ public class ItemPoweredScribingTools extends MAItem implements IScribeTools, IC
 {
 	public CustomEnergyStorage energyStorage = new CustomEnergyStorage(10000, 100)
 	{
-
+		@Override public boolean canExtract()
+		{
+			return false;
+		}
 	};
 
 	public ItemPoweredScribingTools()
@@ -37,7 +40,7 @@ public class ItemPoweredScribingTools extends MAItem implements IScribeTools, IC
 	@Override
 	public int getDamage(ItemStack stack)
 	{
-		return super.getDamage(stack);
+		return energyStorage.getMaxEnergyStored() / 100 - energyStorage.getEnergyStored() / 100;
 	}
 
 	@Override
